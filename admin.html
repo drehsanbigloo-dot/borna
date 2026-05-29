@@ -1,0 +1,2363 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>پنل مدیریت — برنا خودرو پارس</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    @font-face { font-family: 'Peyda'; src: url('fonts/Peyda-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Peyda'; src: url('fonts/Peyda-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Peyda'; src: url('fonts/Peyda-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Peyda'; src: url('fonts/Peyda-ExtraBold.woff2') format('woff2'); font-weight: 800; font-display: swap; }
+    @font-face { font-family: 'Peyda'; src: url('fonts/Peyda-Black.woff2') format('woff2'); font-weight: 900; font-display: swap; }
+
+    :root {
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --fg: #1c1b1a;
+      --muted: #6b6964;
+      --border: #ddd9d4;
+      --accent: #133e87;
+      --accent-light: #1e60a8;
+      --success: #15803d;
+      --warning: #b45309;
+      --danger: #dc2626;
+      --font: 'Peyda', sans-serif;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --transition: all 0.2s ease;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ---- Login ---- */
+    .login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .login-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+    .login-card h1 {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .login-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-family: var(--font);
+      direction: ltr;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .login-input:focus { border-color: var(--accent); }
+    .login-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+    .login-btn:hover { background: var(--accent-light); }
+
+    /* ---- Dashboard ---- */
+    .dashboard { display: none; }
+    .dashboard.active { display: block; }
+
+    .admin-header {
+      background: var(--accent);
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .admin-header h1 {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-header .header-actions { display: flex; gap: 8px; align-items: center; }
+    .admin-header .header-actions a, .admin-header .header-actions button {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      transition: background 0.2s, color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      font-family: var(--font);
+    }
+    .admin-header .header-actions a:hover, .admin-header .header-actions button:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .admin-header .header-actions .logout-btn {
+      border-color: rgba(255,255,255,0.3);
+    }
+    .admin-header .header-actions .logout-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .admin-layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+
+    .admin-sidebar {
+      width: 240px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      padding: 16px 0;
+      flex-shrink: 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .admin-sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+      border-right: 3px solid transparent;
+    }
+    .admin-sidebar a:hover { background: rgba(19, 62, 135, 0.06); }
+    .admin-sidebar a.active {
+      background: rgba(19, 62, 135, 0.1);
+      color: var(--accent);
+      border-right-color: var(--accent);
+      font-weight: 700;
+    }
+    .admin-sidebar a i { font-size: 18px; width: 20px; text-align: center; }
+    .admin-sidebar .sidebar-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 16px 20px 8px;
+    }
+
+    .admin-content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+      max-width: 900px;
+    }
+    .admin-content h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .admin-content .page-desc {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ---- Form elements ---- */
+    .form-section {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .form-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-section h3 i { color: var(--accent); }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--fg);
+    }
+    .form-group .hint {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-right: 4px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: var(--font);
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    .form-control:focus { border-color: var(--accent); background: var(--surface); }
+    textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.6; }
+    select.form-control { cursor: pointer; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      border: 0;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-light); }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #1a9e4b; }
+    .btn-warning { background: var(--warning); color: #fff; }
+    .btn-warning:hover { background: #d97706; }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--fg);
+    }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--success);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 9999;
+      pointer-events: none;
+      font-family: var(--font);
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast.error { background: var(--danger); }
+    .toast.warning { background: var(--warning); }
+    .toast.info { background: var(--accent); }
+
+    .actions-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    /* Agent cards in admin */
+    .agent-admin-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+    .agent-admin-card .agent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .agent-admin-card .agent-header h4 { font-size: 14px; font-weight: 700; }
+
+    /* ---- Image management ---- */
+    .img-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .img-card .img-preview {
+      width: 140px;
+      height: 90px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #e8e6e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .img-card .img-preview img,
+    .img-card .img-preview video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .img-card .img-preview .no-img {
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 8px;
+      line-height: 1.4;
+    }
+    .img-card .img-preview .no-img i {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .img-card .img-info { flex: 1; min-width: 0; }
+    .img-card .img-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .img-card .img-info .img-desc {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .img-card .img-info .img-path {
+      font-size: 11px;
+      font-family: ui-monospace, 'IBM Plex Mono', monospace;
+      color: var(--muted);
+      background: var(--surface);
+      padding: 4px 8px;
+      border-radius: 4px;
+      direction: ltr;
+      text-align: left;
+      margin-bottom: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .img-card .img-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .img-card .img-actions .btn { font-size: 12px; padding: 6px 14px; }
+    .img-card .img-actions input[type="file"] { display: none; }
+
+    /* ---- Sidebar overlay + mobile toggle ---- */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 99;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .sidebar-overlay.show {
+      display: block;
+      opacity: 1;
+    }
+    .admin-sidebar {
+      transition: transform 0.25s ease;
+    }
+    .menu-toggle-btn {
+      display: none;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+    }
+      .menu-toggle-btn:hover { opacity: 0.8; }
+
+    /* Sidebar action links (only on mobile) */
+    .sidebar-actions { display: none; }
+
+    @media (max-width: 959px) {
+      .menu-toggle-btn { display: inline-flex; }
+      .admin-header .header-actions { display: none; }
+      .sidebar-actions {
+        display: block;
+        border-top: 1px solid var(--border);
+        margin-top: 12px;
+        padding-top: 12px;
+      }
+      .sidebar-actions a, .sidebar-actions button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        color: var(--fg);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: background 0.15s;
+        width: 100%;
+        background: none;
+        border: 0;
+        cursor: pointer;
+        font-family: var(--font);
+      }
+      .sidebar-actions a:hover, .sidebar-actions button:hover { background: rgba(19, 62, 135, 0.06); }
+      .sidebar-actions a i, .sidebar-actions button i { font-size: 18px; width: 20px; text-align: center; color: var(--accent); }
+      .sidebar-actions .logout-action { color: var(--danger); }
+      .sidebar-actions .logout-action i { color: var(--danger); }
+      .admin-sidebar {
+        position: fixed;
+        top: 56px;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        width: 280px;
+        height: auto;
+        transform: translateX(100%);
+        border-left: 0;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.12);
+        border-right: 1px solid var(--border);
+      }
+      .admin-sidebar.open { transform: translateX(0); }
+      .admin-header { padding: 12px 16px; }
+      .admin-header h1 { font-size: 15px; }
+      .admin-content { padding: 16px; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .login-card { padding: 32px 20px; }
+      .login-card h1 { font-size: 20px; }
+      .admin-header { padding: 10px 12px; }
+      .admin-header h1 { font-size: 13px; gap: 6px; }
+      .admin-header .header-actions a,
+      .admin-header .header-actions button { font-size: 11px; padding: 4px 8px; gap: 4px; }
+      .admin-content { padding: 12px; }
+      .form-section { padding: 16px; }
+      .form-section h3 { font-size: 14px; }
+      .admin-content h2 { font-size: 18px; }
+      .img-card { flex-direction: column; }
+      .img-card .img-preview { width: 100%; height: 160px; }
+      .img-card .img-info h4 { font-size: 13px; }
+      .agent-admin-card { padding: 12px; }
+      .agent-admin-card .agent-header h4 { font-size: 13px; }
+      .form-control { font-size: 13px; padding: 8px 10px; }
+      .btn { font-size: 13px; padding: 8px 14px; }
+      .toast { font-size: 13px; padding: 12px 20px; width: calc(100% - 32px); text-align: center; }
+      .sidebar-overlay.show { display: block; }
+    }
+    @media (max-width: 400px) {
+      .admin-header .header-actions a span,
+      .admin-header .header-actions button span { display: none; }
+      .admin-header h1 i { display: none; }
+      .admin-sidebar { width: 260px; }
+      .form-section { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== Login ======== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <svg width="48" height="48" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;">
+        <rect width="38" height="38" rx="8" fill="#133e87"/>
+        <path d="M10 26L19 10L28 26H10Z" fill="white" opacity="0.9"/>
+        <path d="M14 22L19 14L24 22H14Z" fill="#1e40af"/>
+      </svg>
+      <h1>پنل مدیریت</h1>
+      <p>برنا خودرو پارس — ورود به سامانه مدیریت محتوا</p>
+      <input type="password" class="login-input" id="loginPass" placeholder="رمز عبور را وارد کنید" autocomplete="current-password">
+      <div class="login-error" id="loginError">رمز عبور اشتباه است. دوباره تلاش کنید.</div>
+      <button class="login-btn" onclick="doLogin()"><i class="bi bi-shield-lock"></i> ورود</button>
+      <p style="margin-top:20px; font-size:12px; color:var(--muted);">رمز پیش‌فرض: <b dir="ltr">borna@1405</b></p>
+    </div>
+  </div>
+
+  <!-- ======== Dashboard ======== -->
+  <div class="dashboard" id="dashboard">
+    <header class="admin-header">
+      <h1 id="adminHeader"><button class="menu-toggle-btn" id="menuToggle" onclick="toggleSidebar()" aria-label="باز کردن منو">☰</button><i class="bi bi-gear"></i> پنل مدیریت سایت</h1>
+      <div class="header-actions">
+        <a href="index.html" target="_blank"><i class="bi bi-house-door"></i> مشاهده سایت</a>
+        <button onclick="exportJSON()"><i class="bi bi-download"></i> خروجی JSON</button>
+        <button onclick="document.getElementById('importFile').click()"><i class="bi bi-upload"></i> ورودی JSON</button>
+        <button class="logout-btn" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> خروج</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+    </header>
+
+    <div class="admin-layout">
+      <nav class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-section-title">محتوای سایت</div>
+        <a href="#" class="active" data-tab="tab-general"><i class="bi bi-geo-alt"></i> اطلاعات عمومی</a>
+        <a href="#" data-tab="tab-home"><i class="bi bi-house-door"></i> صفحه اصلی</a>
+        <a href="#" data-tab="tab-news"><i class="bi bi-newspaper"></i> اخبار</a>
+        <a href="#" data-tab="tab-product"><i class="bi bi-truck"></i> محصول (BORNA 560 S)</a>
+        <a href="#" data-tab="tab-about"><i class="bi bi-info-circle"></i> درباره ما</a>
+        <a href="#" data-tab="tab-sales"><i class="bi bi-cart"></i> فروش</a>
+        <a href="#" data-tab="tab-after-sales"><i class="bi bi-gear-wide-connected"></i> خدمات پس از فروش</a>
+        <a href="#" data-tab="tab-contact"><i class="bi bi-envelope"></i> تماس با ما</a>
+        <a href="#" data-tab="tab-agents"><i class="bi bi-people"></i> شبکه نمایندگی</a>
+        <a href="#" data-tab="tab-images"><i class="bi bi-images"></i> تصاویر سایت</a>
+        <div class="sidebar-section-title" style="margin-top:12px;">ابزارها</div>
+        <a href="#" data-tab="tab-export"><i class="bi bi-file-arrow-down"></i> خروجی و پشتیبان‌گیری</a>
+        <div class="sidebar-actions">
+          <a href="index.html" target="_blank"><i class="bi bi-house-door"></i> مشاهده سایت</a>
+          <button onclick="exportJSON(); closeSidebar()"><i class="bi bi-download"></i> خروجی JSON</button>
+          <button onclick="document.getElementById('importFile').click(); closeSidebar()"><i class="bi bi-upload"></i> ورودی JSON</button>
+          <button class="logout-action" onclick="doLogout(); closeSidebar()"><i class="bi bi-box-arrow-right"></i> خروج</button>
+        </div>
+      </nav>
+
+      <main class="admin-content" id="adminContent">
+
+        <!-- ===== GENERAL ===== -->
+        <div class="tab-pane active" id="tab-general">
+          <h2>اطلاعات عمومی</h2>
+          <p class="page-desc">اطلاعات تماس و مشخصات عمومی شرکت که در سراسر سایت استفاده می‌شوند.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-building"></i> اطلاعات شرکت</h3>
+            <div class="form-group">
+              <label>نام شرکت</label>
+              <input class="form-control" id="f-co-name" data-path="company.name">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>تلفن</label>
+                <input class="form-control" id="f-co-phone" data-path="company.phone" dir="ltr">
+              </div>
+              <div class="form-group">
+                <label>ایمیل</label>
+                <input class="form-control" id="f-co-email" data-path="company.email" dir="ltr">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>آدرس دفتر مرکزی</label>
+              <input class="form-control" id="f-co-address" data-path="company.address">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>آدرس کارخانه شیراز</label>
+                <input class="form-control" id="f-co-factory-addr" data-path="company.factoryAddress">
+              </div>
+              <div class="form-group">
+                <label>تلفن کارخانه</label>
+                <input class="form-control" id="f-co-factory-phone" data-path="company.factoryPhone" dir="ltr">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ساعت کاری</label>
+                <input class="form-control" id="f-co-hours" data-path="company.hours">
+              </div>
+              <div class="form-group">
+                <label>فکس</label>
+                <input class="form-control" id="f-co-fax" data-path="company.fax" dir="ltr">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>داستان برنا (فوتر)</label>
+              <textarea class="form-control" id="f-co-footerStory" data-path="company.footerStory" style="height:90px;" placeholder="متن کوتاه درباره شرکت که در فوتر نمایش داده می‌شود"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-share"></i> شبکه‌های اجتماعی</h3>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>اینستاگرام (URL)</label>
+                <input class="form-control" id="f-co-instagram" data-path="social.instagram" dir="ltr" placeholder="https://instagram.com/...">
+              </div>
+              <div class="form-group">
+                <label>تلگرام (URL)</label>
+                <input class="form-control" id="f-co-telegram" data-path="social.telegram" dir="ltr">
+              </div>
+              <div class="form-group">
+                <label>لینکدین (URL)</label>
+                <input class="form-control" id="f-co-linkedin" data-path="social.linkedin" dir="ltr">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>یوتیوب (URL)</label>
+                <input class="form-control" id="f-co-youtube" data-path="social.youtube" dir="ltr">
+              </div>
+              <div class="form-group">
+                <label>واتساپ (URL)</label>
+                <input class="form-control" id="f-co-whatsapp" data-path="social.whatsapp" dir="ltr">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-geo-alt"></i> موقعیت Google Maps</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>عرض جغرافیایی (Latitude)</label>
+                <input class="form-control" id="f-co-lat" data-path="map.lat" dir="ltr">
+              </div>
+              <div class="form-group">
+                <label>طول جغرافیایی (Longitude)</label>
+                <input class="form-control" id="f-co-lng" data-path="map.lng" dir="ltr">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-globe"></i> SEO / Meta</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>عنوان سایت (Site Title)</label>
+                <input class="form-control" id="f-seo-title" data-path="seo.siteTitle">
+              </div>
+              <div class="form-group">
+                <label>توضیحات متا (Meta Description)</label>
+                <input class="form-control" id="f-seo-desc" data-path="seo.metaDescription">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== HOME ===== -->
+        <div class="tab-pane" id="tab-home">
+          <h2>صفحه اصلی</h2>
+          <p class="page-desc">ویرایش محتوای صفحه اصلی — اسلایدها، بخش خوش‌آمدگویی، خدمات، آمار، اخبار و CTA.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-card-heading"></i> اسلاید ۲ (کیفیت جهانی)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>تیتر</label>
+                <input class="form-control" id="f-home-slide2-tag" data-path="home.slide2.tag">
+              </div>
+              <div class="form-group">
+                <label>عنوان اصلی</label>
+                <input class="form-control" id="f-home-slide2-title" data-path="home.slide2.title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>متن توضیحات</label>
+              <textarea class="form-control" id="f-home-slide2-sub" data-path="home.slide2.sub"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-card-heading"></i> اسلاید ۳ (خدمات پایدار)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>تیتر</label>
+                <input class="form-control" id="f-home-slide3-tag" data-path="home.slide3.tag">
+              </div>
+              <div class="form-group">
+                <label>عنوان اصلی</label>
+                <input class="form-control" id="f-home-slide3-title" data-path="home.slide3.title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>متن توضیحات</label>
+              <textarea class="form-control" id="f-home-slide3-sub" data-path="home.slide3.sub"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-chat-quote"></i> بخش خوش‌آمدگویی</h3>
+            <div class="form-group">
+              <label>عنوان</label>
+              <input class="form-control" id="f-home-welcome-title" data-path="home.welcome.title">
+            </div>
+            <div class="form-group">
+              <label>پاراگراف اول</label>
+              <textarea class="form-control" id="f-home-welcome-p1" data-path="home.welcome.p1"></textarea>
+            </div>
+            <div class="form-group">
+              <label>پاراگراف دوم</label>
+              <textarea class="form-control" id="f-home-welcome-p2" data-path="home.welcome.p2"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-grid-3x3"></i> خدمات (۲ کارت)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>عنوان کارت فروش</label>
+                <input class="form-control" id="f-home-svc1-title" data-path="home.services.sale.title">
+              </div>
+              <div class="form-group">
+                <label>عنوان کارت پس از فروش</label>
+                <input class="form-control" id="f-home-svc2-title" data-path="home.services.aftersale.title">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>توضیحات فروش</label>
+                <textarea class="form-control" id="f-home-svc1-desc" data-path="home.services.sale.desc"></textarea>
+              </div>
+              <div class="form-group">
+                <label>توضیحات پس از فروش</label>
+                <textarea class="form-control" id="f-home-svc2-desc" data-path="home.services.aftersale.desc"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-bar-chart"></i> آمار (۴ عدد)</h3>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>آمار ۱ — عدد</label>
+                <input class="form-control" id="f-home-stat1-num" data-path="home.stats.0.num">
+              </div>
+              <div class="form-group">
+                <label>آمار ۱ — برچسب</label>
+                <input class="form-control" id="f-home-stat1-label" data-path="home.stats.0.label">
+              </div>
+              <div class="form-group">
+                <label>آمار ۲ — عدد</label>
+                <input class="form-control" id="f-home-stat2-num" data-path="home.stats.1.num">
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>آمار ۲ — برچسب</label>
+                <input class="form-control" id="f-home-stat2-label" data-path="home.stats.1.label">
+              </div>
+              <div class="form-group">
+                <label>آمار ۳ — عدد</label>
+                <input class="form-control" id="f-home-stat3-num" data-path="home.stats.2.num">
+              </div>
+              <div class="form-group">
+                <label>آمار ۳ — برچسب</label>
+                <input class="form-control" id="f-home-stat3-label" data-path="home.stats.2.label">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>آمار ۴ — عدد</label>
+                <input class="form-control" id="f-home-stat4-num" data-path="home.stats.3.num">
+              </div>
+              <div class="form-group">
+                <label>آمار ۴ — برچسب</label>
+                <input class="form-control" id="f-home-stat4-label" data-path="home.stats.3.label">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-newspaper"></i> آخرین اخبار (۳ عدد)</h3>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>خبر ۱ — تاریخ</label>
+                <input class="form-control" id="f-home-news1-date" data-path="home.news.0.date">
+              </div>
+              <div class="form-group">
+                <label>خبر ۱ — عنوان</label>
+                <input class="form-control" id="f-home-news1-title" data-path="home.news.0.title">
+              </div>
+              <div class="form-group">
+                <label>خبر ۱ — خلاصه</label>
+                <textarea class="form-control" id="f-home-news1-desc" data-path="home.news.0.desc"></textarea>
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>خبر ۲ — تاریخ</label>
+                <input class="form-control" id="f-home-news2-date" data-path="home.news.1.date">
+              </div>
+              <div class="form-group">
+                <label>خبر ۲ — عنوان</label>
+                <input class="form-control" id="f-home-news2-title" data-path="home.news.1.title">
+              </div>
+              <div class="form-group">
+                <label>خبر ۲ — خلاصه</label>
+                <textarea class="form-control" id="f-home-news2-desc" data-path="home.news.1.desc"></textarea>
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>خبر ۳ — تاریخ</label>
+                <input class="form-control" id="f-home-news3-date" data-path="home.news.2.date">
+              </div>
+              <div class="form-group">
+                <label>خبر ۳ — عنوان</label>
+                <input class="form-control" id="f-home-news3-title" data-path="home.news.2.title">
+              </div>
+              <div class="form-group">
+                <label>خبر ۳ — خلاصه</label>
+                <textarea class="form-control" id="f-home-news3-desc" data-path="home.news.2.desc"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-megaphone"></i> بخش CTA (فراخوان)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>عنوان CTA</label>
+                <input class="form-control" id="f-home-cta-title" data-path="home.cta.title">
+              </div>
+              <div class="form-group">
+                <label>متن CTA</label>
+                <textarea class="form-control" id="f-home-cta-desc" data-path="home.cta.desc"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== NEWS ===== -->
+        <div class="tab-pane" id="tab-news">
+          <h2>اخبار</h2>
+          <p class="page-desc">مدیریت اخبار صفحه اصلی. می‌توانید اخبار جدید اضافه کنید یا حذف نمایید.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-newspaper"></i> لیست اخبار (<span id="newsCount">۰</span> خبر)</h3>
+            <div style="margin-bottom:12px;">
+              <button class="btn btn-primary" onclick="addNewsItem()"><i class="bi bi-plus-lg"></i> افزودن خبر جدید</button>
+            </div>
+            <div id="newsAdminList"></div>
+          </div>
+        </div>
+
+        <!-- ===== PRODUCT ===== -->
+        <div class="tab-pane" id="tab-product">
+          <h2>محصول — BORNA 560 S</h2>
+          <p class="page-desc">ویرایش مشخصات و محتوای صفحه محصول.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-eye"></i> بخش قهرمان (Hero)</h3>
+            <div class="form-group">
+              <label>تیتر بالای عنوان</label>
+              <input class="form-control" id="f-prod-hero-tag" data-path="product.hero.tag">
+            </div>
+            <div class="form-group">
+              <label>عنوان اصلی</label>
+              <input class="form-control" id="f-prod-hero-title" data-path="product.hero.title">
+            </div>
+            <div class="form-group">
+              <label>زیرنویس</label>
+              <textarea class="form-control" id="f-prod-hero-sub" data-path="product.hero.sub"></textarea>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>اسپک ۱ — برچسب</label>
+                <input class="form-control" id="f-prod-hero-s1-label" data-path="product.hero.specs.0.label">
+              </div>
+              <div class="form-group">
+                <label>اسپک ۱ — مقدار</label>
+                <input class="form-control" id="f-prod-hero-s1-val" data-path="product.hero.specs.0.value">
+              </div>
+              <div class="form-group">
+                <label>اسپک ۲ — برچسب</label>
+                <input class="form-control" id="f-prod-hero-s2-label" data-path="product.hero.specs.1.label">
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>اسپک ۲ — مقدار</label>
+                <input class="form-control" id="f-prod-hero-s2-val" data-path="product.hero.specs.1.value">
+              </div>
+              <div class="form-group">
+                <label>اسپک ۳ — برچسب</label>
+                <input class="form-control" id="f-prod-hero-s3-label" data-path="product.hero.specs.2.label">
+              </div>
+              <div class="form-group">
+                <label>اسپک ۳ — مقدار</label>
+                <input class="form-control" id="f-prod-hero-s3-val" data-path="product.hero.specs.2.value">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>اسپک ۴ — برچسب</label>
+                <input class="form-control" id="f-prod-hero-s4-label" data-path="product.hero.specs.3.label">
+              </div>
+              <div class="form-group">
+                <label>اسپک ۴ — مقدار</label>
+                <input class="form-control" id="f-prod-hero-s4-val" data-path="product.hero.specs.3.value">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-star"></i> کارت‌های ویژگی (۳ عدد)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ویژگی ۱ — عنوان</label>
+                <input class="form-control" id="f-prod-feat1-title" data-path="product.features.0.title">
+              </div>
+              <div class="form-group">
+                <label>ویژگی ۱ — متن</label>
+                <textarea class="form-control" id="f-prod-feat1-desc" data-path="product.features.0.desc"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ویژگی ۲ — عنوان</label>
+                <input class="form-control" id="f-prod-feat2-title" data-path="product.features.1.title">
+              </div>
+              <div class="form-group">
+                <label>ویژگی ۲ — متن</label>
+                <textarea class="form-control" id="f-prod-feat2-desc" data-path="product.features.1.desc"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ویژگی ۳ — عنوان</label>
+                <input class="form-control" id="f-prod-feat3-title" data-path="product.features.2.title">
+              </div>
+              <div class="form-group">
+                <label>ویژگی ۳ — متن</label>
+                <textarea class="form-control" id="f-prod-feat3-desc" data-path="product.features.2.desc"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-table"></i> جدول مشخصات فنی (سطرهای اصلی)</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">بخش‌های اصلی جدول مشخصات. برای تغییر کامل جدول از فایل JSON استفاده کنید.</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label>طول کلی</label>
+                <input class="form-control" id="f-prod-dim-l" data-path="product.dimensions.length">
+              </div>
+              <div class="form-group">
+                <label>عرض کلی</label>
+                <input class="form-control" id="f-prod-dim-w" data-path="product.dimensions.width">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ارتفاع کلی</label>
+                <input class="form-control" id="f-prod-dim-h" data-path="product.dimensions.height">
+              </div>
+              <div class="form-group">
+                <label>فاصله محور</label>
+                <input class="form-control" id="f-prod-dim-wb" data-path="product.dimensions.wheelbase">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>وزن ناخالص</label>
+                <input class="form-control" id="f-prod-dim-gvw" data-path="product.dimensions.gvw">
+              </div>
+              <div class="form-group">
+                <label>وزن خالص (شاسی)</label>
+                <input class="form-control" id="f-prod-dim-cw" data-path="product.dimensions.chassisWeight">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>مدل موتور</label>
+                <input class="form-control" id="f-prod-engine-model" data-path="product.engine.model">
+              </div>
+              <div class="form-group">
+                <label>نوع موتور</label>
+                <input class="form-control" id="f-prod-engine-type" data-path="product.engine.type">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>قدرت</label>
+                <input class="form-control" id="f-prod-engine-power" data-path="product.engine.power">
+              </div>
+              <div class="form-group">
+                <label>گشتاور</label>
+                <input class="form-control" id="f-prod-engine-torque" data-path="product.engine.torque">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>گیربکس</label>
+                <input class="form-control" id="f-prod-engine-trans" data-path="product.engine.transmission">
+              </div>
+              <div class="form-group">
+                <label>باک سوخت</label>
+                <input class="form-control" id="f-prod-engine-fuel" data-path="product.engine.fuelTank">
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== BLOG (Product) ===== -->
+          <div class="form-section">
+            <h3><i class="bi bi-pencil-square"></i> بلاگ (تعداد: <span id="blogCount">۰</span> مقاله)</h3>
+            <div style="margin-bottom:12px;">
+              <button class="btn btn-primary" onclick="addBlogItem()"><i class="bi bi-plus-lg"></i> افزودن مقاله جدید</button>
+            </div>
+            <div id="blogAdminList"></div>
+          </div>
+        </div>
+
+        <!-- ===== ABOUT ===== -->
+        <div class="tab-pane" id="tab-about">
+          <h2>درباره ما</h2>
+          <p class="page-desc">ویرایش محتوای صفحه درباره ما — داستان شرکت، ارزش‌ها و تایم‌لاین.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-book"></i> داستان شرکت</h3>
+            <div class="form-group">
+              <label>عنوان بخش</label>
+              <input class="form-control" id="f-about-story-title" data-path="about.story.title">
+            </div>
+            <div class="form-group">
+              <label>پاراگراف اول</label>
+              <textarea class="form-control" id="f-about-story-p1" data-path="about.story.p1"></textarea>
+            </div>
+            <div class="form-group">
+              <label>پاراگراف دوم</label>
+              <textarea class="form-control" id="f-about-story-p2" data-path="about.story.p2"></textarea>
+            </div>
+            <div class="form-group">
+              <label>پاراگراف سوم</label>
+              <textarea class="form-control" id="f-about-story-p3" data-path="about.story.p3"></textarea>
+            </div>
+            <div class="form-group">
+              <label>پاراگراف چهارم</label>
+              <textarea class="form-control" id="f-about-story-p4" data-path="about.story.p4"></textarea>
+            </div>
+            <div class="form-group">
+              <label>پاراگراف پنجم</label>
+              <textarea class="form-control" id="f-about-story-p5" data-path="about.story.p5"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-star"></i> ارزش‌های ما (۶ مورد)</h3>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>ارزش ۱ — عنوان</label>
+                <input class="form-control" id="f-about-val1-title" data-path="about.values.0.title">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۱ — توضیحات</label>
+                <input class="form-control" id="f-about-val1-desc" data-path="about.values.0.desc">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۲ — عنوان</label>
+                <input class="form-control" id="f-about-val2-title" data-path="about.values.1.title">
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>ارزش ۲ — توضیحات</label>
+                <input class="form-control" id="f-about-val2-desc" data-path="about.values.1.desc">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۳ — عنوان</label>
+                <input class="form-control" id="f-about-val3-title" data-path="about.values.2.title">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۳ — توضیحات</label>
+                <input class="form-control" id="f-about-val3-desc" data-path="about.values.2.desc">
+              </div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>ارزش ۴ — عنوان</label>
+                <input class="form-control" id="f-about-val4-title" data-path="about.values.3.title">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۴ — توضیحات</label>
+                <input class="form-control" id="f-about-val4-desc" data-path="about.values.3.desc">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۵ — عنوان</label>
+                <input class="form-control" id="f-about-val5-title" data-path="about.values.4.title">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ارزش ۵ — توضیحات</label>
+                <input class="form-control" id="f-about-val5-desc" data-path="about.values.4.desc">
+              </div>
+              <div class="form-group">
+                <label>ارزش ۶ — عنوان</label>
+                <input class="form-control" id="f-about-val6-title" data-path="about.values.5.title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>ارزش ۶ — توضیحات</label>
+              <input class="form-control" id="f-about-val6-desc" data-path="about.values.5.desc">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-timeline"></i> تایم‌لاین (۴ رویداد)</h3>
+            <div class="form-row-3">
+              <div class="form-group"><label>رویداد ۱ — سال</label><input class="form-control" id="f-about-tl1-year" data-path="about.timeline.0.year"></div>
+              <div class="form-group"><label>رویداد ۱ — عنوان</label><input class="form-control" id="f-about-tl1-title" data-path="about.timeline.0.title"></div>
+              <div class="form-group"><label>رویداد ۱ — توضیحات</label><input class="form-control" id="f-about-tl1-desc" data-path="about.timeline.0.desc"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>رویداد ۲ — سال</label><input class="form-control" id="f-about-tl2-year" data-path="about.timeline.1.year"></div>
+              <div class="form-group"><label>رویداد ۲ — عنوان</label><input class="form-control" id="f-about-tl2-title" data-path="about.timeline.1.title"></div>
+              <div class="form-group"><label>رویداد ۲ — توضیحات</label><input class="form-control" id="f-about-tl2-desc" data-path="about.timeline.1.desc"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>رویداد ۳ — سال</label><input class="form-control" id="f-about-tl3-year" data-path="about.timeline.2.year"></div>
+              <div class="form-group"><label>رویداد ۳ — عنوان</label><input class="form-control" id="f-about-tl3-title" data-path="about.timeline.2.title"></div>
+              <div class="form-group"><label>رویداد ۳ — توضیحات</label><input class="form-control" id="f-about-tl3-desc" data-path="about.timeline.2.desc"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>رویداد ۴ — سال</label><input class="form-control" id="f-about-tl4-year" data-path="about.timeline.3.year"></div>
+              <div class="form-group"><label>رویداد ۴ — عنوان</label><input class="form-control" id="f-about-tl4-title" data-path="about.timeline.3.title"></div>
+              <div class="form-group"><label>رویداد ۴ — توضیحات</label><input class="form-control" id="f-about-tl4-desc" data-path="about.timeline.3.desc"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SALES ===== -->
+        <div class="tab-pane" id="tab-sales">
+          <h2>فروش</h2>
+          <p class="page-desc">ویرایش محتوای صفحه فروش — شرایط خرید و مراحل.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-cash-stack"></i> طرح‌های خرید (۳ طرح)</h3>
+            <div class="form-row">
+              <div class="form-group"><label>طرح ۱ — عنوان (نقدی)</label><input class="form-control" id="f-sale-p1-title" data-path="sales.plans.0.title"></div>
+              <div class="form-group"><label>طرح ۱ — قیمت / تخفیف</label><input class="form-control" id="f-sale-p1-price" data-path="sales.plans.0.price"></div>
+            </div>
+            <div class="form-group"><label>طرح ۱ — ویژگی‌ها (با خط جدید جدا کنید)</label><textarea class="form-control" id="f-sale-p1-feats" data-path="sales.plans.0.feats"></textarea></div>
+            <div class="form-row">
+              <div class="form-group"><label>طرح ۲ — عنوان (اقساطی)</label><input class="form-control" id="f-sale-p2-title" data-path="sales.plans.1.title"></div>
+              <div class="form-group"><label>طرح ۲ — قیمت / پیش‌پرداخت</label><input class="form-control" id="f-sale-p2-price" data-path="sales.plans.1.price"></div>
+            </div>
+            <div class="form-group"><label>طرح ۲ — ویژگی‌ها</label><textarea class="form-control" id="f-sale-p2-feats" data-path="sales.plans.1.feats"></textarea></div>
+            <div class="form-row">
+              <div class="form-group"><label>طرح ۳ — عنوان (لیزینگ)</label><input class="form-control" id="f-sale-p3-title" data-path="sales.plans.2.title"></div>
+              <div class="form-group"><label>طرح ۳ — قیمت / پیش‌پرداخت</label><input class="form-control" id="f-sale-p3-price" data-path="sales.plans.2.price"></div>
+            </div>
+            <div class="form-group"><label>طرح ۳ — ویژگی‌ها</label><textarea class="form-control" id="f-sale-p3-feats" data-path="sales.plans.2.feats"></textarea></div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-123"></i> مراحل خرید (۴ مرحله)</h3>
+            <div class="form-row-3">
+              <div class="form-group"><label>مرحله ۱ — عنوان</label><input class="form-control" id="f-sale-step1-title" data-path="sales.steps.0.title"></div>
+              <div class="form-group"><label>مرحله ۱ — توضیحات</label><input class="form-control" id="f-sale-step1-desc" data-path="sales.steps.0.desc"></div>
+              <div class="form-group"><label>مرحله ۲ — عنوان</label><input class="form-control" id="f-sale-step2-title" data-path="sales.steps.1.title"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>مرحله ۲ — توضیحات</label><input class="form-control" id="f-sale-step2-desc" data-path="sales.steps.1.desc"></div>
+              <div class="form-group"><label>مرحله ۳ — عنوان</label><input class="form-control" id="f-sale-step3-title" data-path="sales.steps.2.title"></div>
+              <div class="form-group"><label>مرحله ۳ — توضیحات</label><input class="form-control" id="f-sale-step3-desc" data-path="sales.steps.2.desc"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>مرحله ۴ — عنوان</label><input class="form-control" id="f-sale-step4-title" data-path="sales.steps.3.title"></div>
+              <div class="form-group"><label>مرحله ۴ — توضیحات</label><input class="form-control" id="f-sale-step4-desc" data-path="sales.steps.3.desc"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== AFTER-SALES ===== -->
+        <div class="tab-pane" id="tab-after-sales">
+          <h2>خدمات پس از فروش</h2>
+          <p class="page-desc">ویرایش محتوای صفحه خدمات پس از فروش.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-card-text"></i> نمای کلی</h3>
+            <div class="form-group">
+              <label>عنوان بخش</label>
+              <input class="form-control" id="f-aft-overview-title" data-path="afterSales.overview.title">
+            </div>
+            <div class="form-group">
+              <label>پاراگراف اول</label>
+              <textarea class="form-control" id="f-aft-overview-p1" data-path="afterSales.overview.p1"></textarea>
+            </div>
+            <div class="form-group">
+              <label>پاراگراف دوم</label>
+              <textarea class="form-control" id="f-aft-overview-p2" data-path="afterSales.overview.p2"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-shield-check"></i> مزایا (۶ مورد)</h3>
+            <div class="form-row-3">
+              <div class="form-group"><label>مزیت ۱ — عنوان</label><input class="form-control" id="f-aft-ben1-title" data-path="afterSales.benefits.0.title"></div>
+              <div class="form-group"><label>مزیت ۱ — توضیحات</label><input class="form-control" id="f-aft-ben1-desc" data-path="afterSales.benefits.0.desc"></div>
+              <div class="form-group"><label>مزیت ۲ — عنوان</label><input class="form-control" id="f-aft-ben2-title" data-path="afterSales.benefits.1.title"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>مزیت ۲ — توضیحات</label><input class="form-control" id="f-aft-ben2-desc" data-path="afterSales.benefits.1.desc"></div>
+              <div class="form-group"><label>مزیت ۳ — عنوان</label><input class="form-control" id="f-aft-ben3-title" data-path="afterSales.benefits.2.title"></div>
+              <div class="form-group"><label>مزیت ۳ — توضیحات</label><input class="form-control" id="f-aft-ben3-desc" data-path="afterSales.benefits.2.desc"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>مزیت ۴ — عنوان</label><input class="form-control" id="f-aft-ben4-title" data-path="afterSales.benefits.3.title"></div>
+              <div class="form-group"><label>مزیت ۴ — توضیحات</label><input class="form-control" id="f-aft-ben4-desc" data-path="afterSales.benefits.3.desc"></div>
+              <div class="form-group"><label>مزیت ۵ — عنوان</label><input class="form-control" id="f-aft-ben5-title" data-path="afterSales.benefits.4.title"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>مزیت ۵ — توضیحات</label><input class="form-control" id="f-aft-ben5-desc" data-path="afterSales.benefits.4.desc"></div>
+              <div class="form-group"><label>مزیت ۶ — عنوان</label><input class="form-control" id="f-aft-ben6-title" data-path="afterSales.benefits.5.title"></div>
+            </div>
+            <div class="form-group"><label>مزیت ۶ — توضیحات</label><input class="form-control" id="f-aft-ben6-desc" data-path="afterSales.benefits.5.desc"></div>
+          </div>
+        </div>
+
+        <!-- ===== CONTACT ===== -->
+        <div class="tab-pane" id="tab-contact">
+          <h2>تماس با ما</h2>
+          <p class="page-desc">ویرایش اطلاعات صفحه تماس با ما.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-card-list"></i> کارت‌های تماس</h3>
+            <div class="form-group">
+              <label>آدرس دفتر مرکزی</label>
+              <textarea class="form-control" id="f-con-addr" data-path="contact.address"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>آدرس کارخانه شیراز</label>
+                <input class="form-control" id="f-con-factory-addr" data-path="contact.factoryAddress">
+              </div>
+              <div class="form-group">
+                <label>تلفن کارخانه</label>
+                <input class="form-control" id="f-con-factory-phone" data-path="contact.factoryPhone" dir="ltr">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>تلفن (خط اول)</label>
+                <input class="form-control" id="f-con-phone1" data-path="contact.phone1" dir="ltr">
+              </div>
+              <div class="form-group">
+                <label>تلفن (خط دوم)</label>
+                <input class="form-control" id="f-con-phone2" data-path="contact.phone2" dir="ltr">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ایمیل (اصلی)</label>
+                <input class="form-control" id="f-con-email1" data-path="contact.email1" dir="ltr">
+              </div>
+              <div class="form-group">
+                <label>ایمیل (فروش)</label>
+                <input class="form-control" id="f-con-email2" data-path="contact.email2" dir="ltr">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ساعت کاری شنبه تا چهارشنبه</label>
+                <input class="form-control" id="f-con-hours1" data-path="contact.hoursWeekday">
+              </div>
+              <div class="form-group">
+                <label>ساعت کاری پنجشنبه</label>
+                <input class="form-control" id="f-con-hours2" data-path="contact.hoursFriday">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-geo-alt"></i> مختصات Google Maps</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:8px;">ابتدا در برگه "اطلاعات عمومی" مختصات را تنظیم کنید.</p>
+          </div>
+        </div>
+
+        <!-- ===== AGENTS ===== -->
+        <div class="tab-pane" id="tab-agents">
+          <h2>شبکه نمایندگی</h2>
+          <p class="page-desc">ویرایش نمایندگی‌ها و آمار شبکه نمایندگی.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-bar-chart"></i> آمار بالای صفحه</h3>
+            <div class="form-row-3">
+              <div class="form-group"><label>تعداد نمایندگی فعال</label><input class="form-control" id="f-agents-st1-num" data-path="agents.stats.0.num"></div>
+              <div class="form-group"><label>برچسب آمار ۱</label><input class="form-control" id="f-agents-st1-label" data-path="agents.stats.0.label"></div>
+              <div class="form-group"><label>استان تحت پوشش</label><input class="form-control" id="f-agents-st2-num" data-path="agents.stats.1.num"></div>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group"><label>برچسب آمار ۲</label><input class="form-control" id="f-agents-st2-label" data-path="agents.stats.1.label"></div>
+              <div class="form-group"><label>استان دارای نمایندگی</label><input class="form-control" id="f-agents-st3-num" data-path="agents.stats.2.num"></div>
+              <div class="form-group"><label>برچسب آمار ۳</label><input class="form-control" id="f-agents-st3-label" data-path="agents.stats.2.label"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>آمار ۴ — عدد</label><input class="form-control" id="f-agents-st4-num" data-path="agents.stats.3.num"></div>
+              <div class="form-group"><label>آمار ۴ — برچسب</label><input class="form-control" id="f-agents-st4-label" data-path="agents.stats.3.label"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-people"></i> نمایندگی‌ها (<span id="agentCount">۱۰</span> نمایندگی)</h3>
+            <div style="margin-bottom:12px;">
+              <button class="btn btn-primary" onclick="addAgent()"><i class="bi bi-plus-lg"></i> افزودن نمایندگی جدید</button>
+            </div>
+            <div id="agentsAdminList"></div>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-info-circle"></i> متن‌های ثابت</h3>
+            <div class="form-group">
+              <label>متن بالای نقشه</label>
+              <input class="form-control" id="f-agents-map-intro" data-path="agents.mapIntro">
+            </div>
+            <div class="form-group">
+              <label>متن تماس انتهای صفحه</label>
+              <input class="form-control" id="f-agents-footer-text" data-path="agents.footerText">
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== IMAGES ===== -->
+        <div class="tab-pane" id="tab-images">
+          <h2>تصاویر سایت</h2>
+          <p class="page-desc">مدیریت تمام تصاویر و ویدیوهای استفاده شده در سایت. می‌توانید فایل جدید آپلود کرده یا مسیر فایل را تغییر دهید.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+            <button class="btn btn-sm btn-primary" onclick="exportImages()"><i class="bi bi-download"></i> خروجی تصاویر (JSON)</button>
+            <button class="btn btn-sm btn-outline" onclick="document.getElementById('importImagesFile').click()"><i class="bi bi-upload"></i> ورودی تصاویر</button>
+            <input type="file" id="importImagesFile" accept=".json" style="display:none" onchange="importImages(event)">
+            <button class="btn btn-sm btn-outline" onclick="applyImagesToSite()"><i class="bi bi-send"></i> اعمال به سایت</button>
+          </div>
+          <div id="imagesList" class="form-section" style="padding:0;background:none;box-shadow:none;"></div>
+        </div>
+
+        <!-- ===== EXPORT / IMPORT ===== -->
+        <div class="tab-pane" id="tab-export">
+          <h2>خروجی و پشتیبان‌گیری</h2>
+          <p class="page-desc">تمامی داده‌های سایت را به صورت یک فایل JSON ذخیره کنید یا از فایل پشتیبان بازیابی کنید.</p>
+
+          <div class="form-section">
+            <h3><i class="bi bi-download"></i> خروجی گرفتن (Export JSON)</h3>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">تمام محتوای ویرایش شده را به صورت یک فایل JSON دانلود کنید. این فایل شامل تمام برگه‌ها و تنظیمات است.</p>
+            <button class="btn btn-primary" onclick="exportJSON()"><i class="bi bi-file-earmark-arrow-down"></i> دانلود فایل JSON</button>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-upload"></i> بازیابی از فایل (Import JSON)</h3>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">فایل JSON پشتیبان را انتخاب کنید تا تمام داده‌های سایت با اطلاعات فایل جایگزین شود.</p>
+            <button class="btn btn-warning" onclick="document.getElementById('importFile').click()"><i class="bi bi-upload"></i> انتخاب فایل JSON</button>
+          </div>
+
+          <div class="form-section">
+            <h3><i class="bi bi-arrow-clockwise"></i> بازنشانی به مقادیر پیش‌فرض</h3>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">تمامی تغییرات را پاک کرده و به محتوای پیش‌فرض اولیه بازنشانی کنید.</p>
+            <button class="btn btn-danger" onclick="resetAllData()"><i class="bi bi-exclamation-triangle"></i> بازنشانی همه داده‌ها</button>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ======== Sidebar overlay (mobile) ======== -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ======== Toast ======== -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    var PASSWORD = 'borna@1405';
+
+    /* ---- Default data ---- */
+    var DEFAULT_DATA = {
+      company: {
+        name: 'برنا خودرو پارس',
+        phone: '۰۲۱-۴۴۱۸۱۱۳۴',
+        email: 'info@bornakhodro.co',
+        fax: '۰۲۱-۴۴۱۸۱۱۴۳',
+        address: 'تهران، کیلومتر ۱۵ جاده مخصوص کرج، بعد از پل ایران خودرو، جنب فرش وزرا، پلاک ۴۶۷، طبقه اول، واحد ۶',
+        hours: 'شنبه تا چهارشنبه ۸:۰۰ الی ۱۷:۰۰',
+        factoryAddress: 'شیراز، منطقه ویژه اقتصادی شیراز، بلوار تجارت شرقی',
+        factoryPhone: '۰۷۱-۳۶۵۴۳۲۱۰',
+        footerStory: 'شرکت برنا خودرو پارس با سرمایه‌گذاری و مشارکت فعالان کلیدی صنعت حمل‌ونقل و متخصصان صنایع زیربنایی تأسیس شده است. ما با عشق به ایران عزیز و اتکا به دانش، تجربه و انگیزه جوانان متخصص ایرانی در صنعت خودروهای تجاری، محصولاتی را عرضه می‌کنیم که دقیقاً پاسخگوی نیازهای واقعی صنعت حمل‌ونقل باشند.'
+      },
+      social: {
+        instagram: '#',
+        telegram: '#',
+        linkedin: '#',
+        youtube: '#',
+        whatsapp: ''
+      },
+      map: { lat: '35.71230108338879', lng: '51.22977623874948' },
+      seo: {
+        siteTitle: 'برنا خودرو پارس — قدرتمند، پایدار، پیشرو',
+        metaDescription: 'برنا خودرو پارس — تولید کننده خودروهای تجاری و صنعتی با استانداردهای جهانی'
+      },
+      home: {
+        slide2: { tag: 'کیفیت جهانی', title: 'استانداردهای بین‌المللی', sub: 'محصولات برنا خودرو پارس با رعایت سخت‌گیرانه‌ترین استانداردهای جهانی طراحی و تولید می‌شوند تا امنیت و رضایت شما را تضمین کنند.' },
+        slide3: { tag: 'خدمات پایدار', title: 'شبکه خدمات سراسری', sub: 'با بیش از ۲۰۰ نمایندگی فعال در سراسر کشور، خدمات پس از فروش برنا خودرو پارس همواره در کنار شماست.' },
+        welcome: {
+          title: 'برنا خودرو پارس — پیشگام در صنعت خودروهای تجاری',
+          p1: 'برنا خودرو پارس با تکیه بر بیش از دو دهه تجربه در صنعت خودروسازی، به یکی از معتبرترین تولیدکنندگان خودروهای تجاری، صنعتی و کشاورزی در ایران تبدیل شده است. ما با بهره‌گیری از فناوری‌های روز دنیا و همکاری با شرکای بین‌المللی، محصولاتی با استاندارد جهانی را به مشتریان خود ارائه می‌دهیم.',
+          p2: 'تعهد ما به کیفیت، نوآوری و رضایت مشتری، ارزش‌هایی هستند که در تمام مراحل طراحی، تولید و خدمات پس از فروش همواره مد نظر قرار می‌گیرند.'
+        },
+        services: {
+          sale: { title: 'فروش', desc: 'خرید اقساطی، لیزینگ، و فروش نقدی با بهترین شرایط. مشاوران فروش ما آماده راهنمایی شما هستند.' },
+          aftersale: { title: 'خدمات پس از فروش', desc: 'شبکه گسترده مراکز خدمات مجهز به مدرنترین تجهیزات و کادر فنی مجرب در سراسر کشور.' }
+        },
+        stats: [
+          { num: '۲۰+', label: 'سال تجربه' },
+          { num: '۱۵۰,۰۰۰+', label: 'دستگاه تولید شده' },
+          { num: '۲۰۰+', label: 'نمایندگی فعال' },
+          { num: '۱۵+', label: 'مقصد صادراتی' }
+        ],
+        news: [
+          { date: '۱۵ اردیبهشت ۱۴۰۵', title: 'رونمایی از جدیدترین کامیون BORNA 560 S در نمایشگاه خودرو تهران', desc: 'برنا خودرو پارس در نمایشگاه بین‌المللی خودرو تهران از جدیدترین محصول خود رونمایی کرد.' },
+          { date: '۲ فروردین ۱۴۰۵', title: 'کسب جایزه کیفیت برتر صنعت خودروسازی ایران', desc: 'برای سومین سال پیاپی، برنا خودرو پارس موفق به کسب جایزه ملی کیفیت در صنعت خودرو شد.' },
+          { date: '۱۰ اسفند ۱۴۰۴', title: 'صادرات به سومین کشور منطقه — گام بلند در توسعه بازار', desc: 'برنا خودرو پارس قرارداد صادرات محصولات خود را با سومین کشور همسایه امضا کرد.' }
+        ],
+        cta: { title: 'آماده همکاری با شما هستیم', desc: 'کارشناسان برنا خودرو پارس آماده پاسخگویی به سوالات شما و ارائه مشاوره تخصصی هستند.' }
+      },
+      product: {
+        hero: {
+          tag: 'پرچمدار حمل و نقل سنگین',
+          title: 'BORNA 560 S<br>قدرتِ بلامنازع',
+          sub: 'کامیون تجاری سنگین BORNA 560 S با موتور کامینز Z14E560 52، مهندسی شده برای طولانی‌مسافت‌های سخت. ترکیبی از قدرت ۵۶۰ اسب بخار، گیربکس ZF Traxon AMT و استاندارد یورو ۵.',
+          specs: [
+            { label: 'توان موتور', value: '۵۶۰ اسب بخار' },
+            { label: 'گیربکس', value: 'ZF Traxon 12+2 AMT' },
+            { label: 'استاندارد', value: 'یورو ۵ (EEV)' },
+            { label: 'فاصله محور', value: '۳,۸۰۰ mm' }
+          ]
+        },
+        features: [
+          { title: 'پیشرانه کامینز ۱۳.۵ لیتری', desc: 'موتور Cummins Z14E560 52 با گشتاور ۲٬۶۵۰ Nm در دور ۱٬۱۰۰ rpm و قدرت ۵۶۰ اسب بخار در ۱٬۸۰۰ rpm. مجهز به Common Rail، توربوشارژ اینترکولر و ترمز Jake Brake.' },
+          { title: 'گیربکس ZF Traxon AMT', desc: 'گیربکس اتوماتیک ۱۲+۲ سرعته ZF Traxon 12TX2621TD با کلاچ SACHS ۴۳۰mm و PTO. تعویض دنده نرم و هوشمند با انتخاب نسبت محور ۳.۰۸ / ۳.۳۶ / ۳.۷.' },
+          { title: 'کابین S23H با ایمنی کامل', desc: 'کابین سقف بلند دوخوابه S23H با کف صاف و عرض ۲.۵ متر. مجهز به AEBS، LDWS، FCWS، ESC، TPMS، چهار دوربین فراگیر و ترمز تمام دیسکی WABCO EBS.' }
+        ],
+        dimensions: {
+          length: '۶,۰۵۵ mm', width: '۲,۵۵۰ mm', height: '۳,۹۸۵ mm',
+          wheelbase: '۳,۸۰۰ mm', gvw: '۴۴,۰۰۰ kg', chassisWeight: '۷,۱۰۰ kg'
+        },
+        engine: {
+          model: 'Cummins Z14E560 52 (EEV)',
+          type: '۱۳.۵ لیتر، ۶ سیلندر خطی، توربوشارژ اینترکولر',
+          power: '۵۶۰ اسب بخار @ ۱,۸۰۰ rpm',
+          torque: '۲,۶۵۰ Nm @ ۱,۱۰۰ rpm',
+          transmission: 'ZF Traxon 12TX2621TD — AMT ۱۲+۲ سرعته',
+          fuelTank: '۶۵۰L + ۴۶۰L آلومینیومی'
+        },
+        blog: [
+          { date: '۱۵ اردیبهشت ۱۴۰۵', title: 'معرفی کامیون BORNA 560 S — نسل جدید حمل‌ونقل جاده‌ای', desc: 'کامیون BORNA 560 S با موتور کامینز Z14E560 و گیربکس ZF Traxon، استاندارد جدیدی در صنعت حمل‌ونقل ایران تعریف کرده است. مصرف سوخت بهینه، کابین راحت و ایمنی پیشرفته از ویژگی‌های کلیدی این محصول است.' },
+          { date: '۸ اردیبهشت ۱۴۰۵', title: 'نگاهی به پیشرانه کامینز Z14E560 — قدرت و دوام در کنار هم', desc: 'موتور ۱۳.۵ لیتری کامینز Z14E560 با ۵۶۰ اسب‌بخار قدرت و ۲۶۵۰ نیوتن‌متر گشتاور، یکی از پیشرفته‌ترین موتورهای راه‌حل‌های حمل‌ونقل سنگین است. سیستم تزریق Common Rail و ترمز Jake Brake از جمله فناوری‌های به‌کاررفته در این موتور هستند.' },
+          { date: '۱ اردیبهشت ۱۴۰۵', title: 'راهنمای سرویس و نگهداری BORNA 560 S', desc: 'برنامه سرویس دوره‌ای هر ۱۰۰,۰۰۰ کیلومتر، استفاده از روغن موتور استاندارد و بازرسی منظم سیستم ترمز WABCO EBS از مهم‌ترین نکات نگهداری این کامیون است. با رعایت این نکات عمر موتور تا ۱,۵۰۰,۰۰۰ کیلومتر افزایش می‌یابد.' }
+        ],
+      },
+      about: {
+        story: {
+          title: 'داستان برنا خودرو پارس',
+          p1: 'شرکت برنا خودرو پارس با سرمایه‌گذاری و مشارکت فعالان کلیدی صنعت حمل‌ونقل و متخصصان صنایع زیربنایی تأسیس شده است. ما با عشق به ایران عزیز و اتکا به دانش، تجربه و انگیزه جوانان متخصص ایرانی در صنعت خودروهای تجاری، محصولاتی را عرضه می‌کنیم که دقیقاً پاسخگوی نیازهای واقعی صنعت حمل‌ونقل باشند.',
+          p2: 'درک عمیق ما از نیازها و چالش‌های فعالان صنعت حمل‌ونقل، امکان تولید خودروهایی با عملکرد قدرتمند، قابل اعتماد و کارآمد را فراهم کرده است. در طراحی و تولید محصولات، بالاترین استانداردهای ملی و بین‌المللی را رعایت می‌کنیم تا بهره‌وری بالا، کاهش هزینه‌های عملیاتی، مصرف بهینه سوخت، همراه با حداکثر ایمنی، کیفیت و دوام را تضمین کنیم.',
+          p3: 'ما باور داریم که یک خودروی تجاری فراتر از یک وسیله نقلیه است؛ آن یک سرمایه استراتژیک و ارزشمند برای مالک و کشور به شمار می‌رود. با ارائه محصولاتی باکیفیت، کم‌مصرف، بادوام و کارآمد، ارزش سرمایه‌گذاری مشتریان را ارتقا می‌دهیم و اطمینان می‌دهیم که انتخاب آن‌ها، سرمایه‌ای پایدار و ماندگار خواهد بود.',
+          p4: 'ایمنی اولویت اصلی ما در طراحی و تولید در کلاس جهانی است. با بهره‌گیری از فناوری‌های نوین، خودروهایی ایمن و مطمئن تولید می‌کنیم که حفاظت کامل از سرنشینان و بار را تضمین کنند. همچنین، با فراهم کردن امکانات مدرن و ارگونومیک، راحتی و لذت رانندگی در مسافت‌های طولانی را برای رانندگان افزایش داده‌ایم.',
+          p5: 'تعهد ما به مشتریان تنها به ارائه محصول محدود نمی‌شود؛ خدمات پس از فروش سریع، کارآمد، در دسترس و گسترده، بخش جدایی‌ناپذیری از فلسفه ما است. با تمرکز بر نوآوری مداوم، ارتقای کیفیت و پشتیبانی پایدار، راهکارهایی مطمئن و سودآور ارائه می‌دهیم تا خودروهای مشتریان همیشه در بهترین شرایط عملیاتی باقی بمانند.'
+        },
+        values: [
+          { title: 'کیفیت پایدار', desc: 'تولید محصولاتی با دوام بالا که در طول عمر مفید خود، عملکردی قابل اعتماد و بدون افت کیفیت ارائه دهند.' },
+          { title: 'ایمنی اولویت اول', desc: 'طراحی و تولید بر اساس بالاترین استانداردهای ایمنی برای حفاظت از راننده، سرنشینان و بار.' },
+          { title: 'کاهش هزینه عملیاتی', desc: 'بهینه‌سازی مصرف سوخت و افزایش فاصله بین سرویس‌ها برای پایین آوردن هزینه تمام شده به ازای هر کیلومتر.' },
+          { title: 'تعهد به مشتری', desc: 'ارائه خدمات پشتیبانی سریع و در دسترس همراه با تأمین قطعات اصلی در کوتاه‌ترین زمان ممکن.' },
+          { title: 'دانش بومی، نگاه جهانی', desc: 'اتکا به توان مهندسان ایرانی در کنار بهره‌گیری از فناوری‌های روز جهان برای تولید محصولی رقابتی.' },
+          { title: 'ارزش‌آفرینی برای کشور', desc: 'حمایت از اشتغال، کاهش وابستگی به واردات خودروی کامل و کمک به توسعه ناوگان حمل‌ونقل ملی.' }
+        ],
+        timeline: [
+          { year: '۱۴۰۳', title: 'آغاز', desc: 'برنا خودرو پارس با درک خلأهای صنعت حمل‌ونقل ایران و تکیه بر دانش داخلی پا به عرصه گذاشت.' },
+          { year: '۱۴۰۴', title: 'ساخت کارخانه و اولین محصول', desc: 'کارخانه مونتاژ راه‌اندازی و اولین کامیون کشنده با اخذ تمام استانداردهای اجباری کشور تکمیل شد.' },
+          { year: '۱۴۰۵', title: 'عرضه به بازار و توسعه شبکه', desc: 'محصول به طور رسمی به ناوگان حمل‌ونقل معرفی می‌شود و پشتیبانی سراسری گسترش می‌یابد.' },
+          { year: '۱۴۰۶ و فراتر', title: 'چشم‌انداز', desc: 'پیشرو بودن در نوآوری و کیفیت برای خلق تجربه‌ای ایمن، پایدار و لذت‌بخش در جاده‌های ایران.' }
+        ]
+      },
+      sales: {
+        plans: [
+          { title: 'خرید نقدی', price: '۱۰٪ تخفیف', feats: 'پرداخت یکجا\nتحویل فوری\n۳ سال گارانتی رایگان\nخدمات رایگان دوره اول' },
+          { title: 'خرید اقساطی', price: '۳۰٪ پیش پرداخت', feats: 'اقساط ۱۲ تا ۶۰ ماهه\nکارمزد رقابتی ۴٪\nتحویل پس از پیش پرداخت\nبیمه شخص ثالث رایگان' },
+          { title: 'لیزینگ', price: '۲۰٪ پیش پرداخت', feats: 'اجاره به شرط تملیک\nبازپرداخت ۲۴ تا ۷۲ ماهه\nمناسب کسب و کارها\nمشاوره رایگان تخصصی' }
+        ],
+        steps: [
+          { title: 'انتخاب محصول', desc: 'مشاهده محصولات و انتخاب خودروی مورد نظر' },
+          { title: 'ثبت درخواست', desc: 'تکمیل فرم درخواست خرید آنلاین و انتخاب روش پرداخت' },
+          { title: 'عقد قرارداد', desc: 'امضای قرارداد و پرداخت پیش پرداخت در نزدیکترین نمایندگی' },
+          { title: 'تحویل خودرو', desc: 'تحویل خودرو در نمایندگی محل عقد قرارداد' }
+        ]
+      },
+      afterSales: {
+        overview: {
+          title: 'شبکه خدمات سراسری برنا خودرو پارس',
+          p1: 'خدمات پس از فروش برنا خودرو پارس با بیش از ۲۰۰ مرکز خدمات مجاز در سراسر کشور، همواره آماده ارائه خدمات به مشتریان عزیز است.',
+          p2: 'ما به کیفیت خدمات خود افتخار می‌کنیم و همواره در تلاشیم تا رضایت کامل شما را جلب نماییم.'
+        },
+        benefits: [
+          { title: 'گارانتی معتبر', desc: '۳ سال گارانتی بدون محدودیت کیلومتر برای تمامی محصولات' },
+          { title: 'شبکه گسترده', desc: 'بیش از ۲۰۰ مرکز خدمات مجاز در سراسر کشور' },
+          { title: 'قطعات اصلی', desc: 'تامین و عرضه قطعات یدکی اصلی و با کیفیت' },
+          { title: 'تکنسین‌های مجرب', desc: 'کادر فنی آموزش دیده با گواهینامه‌های بین‌المللی' },
+          { title: 'خدمات سریع', desc: 'انجام تعمیرات در کوتاهترین زمان ممکن' },
+          { title: 'پشتیبانی ۲۴ ساعته', desc: 'خط تلفن پشتیبانی ۲۴ ساعته برای راهنمایی شما' }
+        ]
+      },
+      contact: {
+        address: 'تهران، کیلومتر ۱۵ جاده مخصوص کرج، بعد از پل ایران خودرو، جنب فرش وزرا، پلاک ۴۶۷، طبقه اول، واحد ۶',
+        phone1: '۰۲۱-۴۴۱۸۱۱۳۴',
+        phone2: '۰۲۱-۴۴۱۸۱۱۴۳',
+        email1: 'info@bornakhodro.co',
+        email2: 'sales@bornakhodro.co',
+        hoursWeekday: 'شنبه تا چهارشنبه: ۸:۰۰ الی ۱۷:۰۰',
+        hoursFriday: 'پنجشنبه: ۸:۰۰ الی ۱۳:۰۰'
+      },
+      images: {
+        logo: { path: 'logo-borna.svg', data: '' },
+        favicon: { path: 'favicon.ico', data: '' },
+        heroPoster: { path: 'slider-main.jpg', data: '' },
+        heroVideo: { path: 'mpomyipw-vid-2.mov', data: '' },
+        heroSlide2: { path: 'hero-img1.png', data: '' },
+        heroSlide3: { path: 'hero-img2.jpg', data: '' },
+        productPoster: { path: 'poster-product.png', data: '' },
+      },
+      agents: {
+        stats: [
+          { num: '۱۰', label: 'نمایندگی فعال' },
+          { num: '۱۵', label: 'استان تحت پوشش' },
+          { num: '۷', label: 'استان دارای نمایندگی' },
+          { num: '۱۰۰٪', label: 'ضمانت اصالت کالا' }
+        ],
+        mapIntro: 'روی هر استان کلیک کنید تا نمایندگی‌های آن را ببینید',
+        footerText: 'برای اطلاعات بیشتر و همکاری با ما تماس بگیرید',
+        items: [
+          { province: 'تهران', city: 'تهران', title: 'نمایندگی تهران، قم و قزوین', manager: 'حسین اکبری', address: 'تهران، بزرگراه آیت‌اله سعیدی، شهرک نمایشگاهی، فاز ۱، خیابان ولایت، گلستان دوم، پلاک ۱۱', phone: '۰۹۱۲-۱۴۶۲۶۴۶', code: '۳۱۰۱', status: 'فعال', geo: '' },
+          { province: 'فارس', city: 'شیراز', title: 'تعمیرگاه مرکزی برنا خودرو', manager: 'تعمیرگاه مرکزی برنا خودرو', address: 'شیراز، بلوار خلیج فارس، روبروی پلیس راه پل فسا', phone: '۰۹۱۸-۳۳۸۰۸۹۰', code: '۳۰۰۰', status: 'فعال', geo: '29.486365247171012,52.63554766245371' },
+          { province: 'اصفهان', city: 'اصفهان', title: 'نمایندگی اصفهان و چهارمحال بختیاری', manager: 'ضیایی - بخشنده', address: 'اصفهان، خیابان فولاد، پلاک ۷۲', phone: '۰۹۱۳-۱۶۷۶۷۶۵', code: '۳۱۱۱', status: 'فعال', geo: '' },
+          { province: 'کرمان', city: 'کرمان', title: 'نمایندگی کرمان', manager: 'محمدحسین مهدویان', address: 'کرمان، شهرک صنعتی خضراء، روبروی فرودگاه', phone: '۰۹۱۳-۲۹۸۳۷۰۶', code: '۳۰۷۱', status: 'در انتظار تایید', geo: '' },
+          { province: 'کرمان', city: 'سیرجان', title: 'نمایندگی سیرجان', manager: 'دکتر سیدحسن نبوی', address: 'سیرجان، بلوار شاهد (کمربندی)، روبروی دکتر صادقی', phone: '۰۹۱۳-۱۴۵۲۰۰۱', code: '۳۰۷۳', status: 'فعال', geo: '' },
+          { province: 'یزد', city: 'یزد', title: 'نمایندگی یزد', manager: 'مهرداد شجاعی', address: 'یزد، کیلومتر ۲ جاده یزد مهریز، جنب فولاد پالش', phone: '۰۹۱۳-۱۰۹۵۶۹۶', code: '۳۰۷۲', status: 'فعال', geo: '' },
+          { province: 'خراسان رضوی', city: 'مشهد', title: 'نمایندگی خراسان رضوی و شمالی', manager: 'یدالله عربی', address: 'مشهد، شهرک صنعتی طرق، خیابان کارآفرین، کارآفرین ۴ سمت راست، پلاک ۲۰۳', phone: '۰۹۱۵-۱۱۵۵۲۱۵', code: '۳۰۳۱', status: 'فعال', geo: '' },
+          { province: 'گلستان', city: 'گرگان', title: 'نمایندگی گلستان، مازندران و سمنان', manager: 'یاسر سعیدی', address: 'گرگان، کوی مهرآوران، کوچه هیرکان ۱۰، بلوار هیرکان، مجتمع ناصر سعیدی، طبقه همکف، واحد شمالی', phone: '۰۹۱۱-۳۷۱۸۸۹۱', code: '۳۰۲۱', status: 'در انتظار تایید', geo: '' },
+          { province: 'کرمانشاه', city: 'کرمانشاه', title: 'نمایندگی کرمانشاه، لرستان و ایلام', manager: 'محمد درخور', address: 'کرمانشاه، جاده اسلام‌آباد غرب، قریه درکه خلیفه‌قلی، روبروی پلیس راه، مجتمع باران', phone: '۰۹۱۸-۸۸۷۷۰۲۹', code: '۳۰۶۱', status: 'فعال', geo: '' },
+          { province: 'هرمزگان', city: 'بندرعباس', title: 'نمایندگی هرمزگان و بوشهر', manager: 'علی پایدار', address: 'بندرعباس، دهستان آیسین، روستای چه چکر، کوچه امامت ۲۵، کوچه جهاد سازندگی، طبقه همکف', phone: '۰۹۳۹-۴۱۷۰۷۰۸', code: '۳۰۸۱', status: 'فعال', geo: '' }
+        ]
+      }
+    };
+
+    /* ---- IndexedDB helpers for large image storage (10MB+ supported) ---- */
+    var DB = {
+      dbName: 'borna_images',
+      storeName: 'images',
+      open: function() {
+        return new Promise(function(resolve, reject) {
+          var req = indexedDB.open(DB.dbName, 1);
+          req.onerror = function() { reject(req.error); };
+          req.onupgradeneeded = function(e) {
+            e.target.result.createObjectStore(DB.storeName);
+          };
+          req.onsuccess = function(e) { resolve(e.target.result); };
+        });
+      },
+      saveAll: function(entries) {
+        return DB.open().then(function(db) {
+          return new Promise(function(resolve, reject) {
+            var tx = db.transaction(DB.storeName, 'readwrite');
+            var store = tx.objectStore(DB.storeName);
+            var count = 0;
+            Object.keys(entries).forEach(function(key) {
+              store.put(entries[key], key);
+              count++;
+            });
+            tx.oncomplete = function() { db.close(); resolve(count); };
+            tx.onerror = function() { db.close(); reject(tx.error); };
+          });
+        });
+      },
+      loadAll: function() {
+        return DB.open().then(function(db) {
+          return new Promise(function(resolve, reject) {
+            var tx = db.transaction(DB.storeName, 'readonly');
+            var store = tx.objectStore(DB.storeName);
+            var req = store.openCursor();
+            var result = {};
+            req.onerror = function() { db.close(); reject(req.error); };
+            req.onsuccess = function(e) {
+              var cursor = e.target.result;
+              if (cursor) {
+                result[cursor.key] = cursor.value;
+                cursor.continue();
+              } else {
+                db.close();
+                resolve(result);
+              }
+            };
+          });
+        });
+      },
+      deleteAll: function() {
+        return DB.open().then(function(db) {
+          return new Promise(function(resolve, reject) {
+            var tx = db.transaction(DB.storeName, 'readwrite');
+            var req = tx.objectStore(DB.storeName).clear();
+            req.onerror = function() { db.close(); reject(req.error); };
+            tx.oncomplete = function() { db.close(); resolve(); };
+          });
+        });
+      }
+    };
+
+    /* ---- Save images to IndexedDB (supports large images up to hundreds of MB) ---- */
+    function saveImagesSeparately() {
+      if (!data.images || !Object.keys(data.images).length) return;
+      DB.saveAll(data.images).then(function(count) {
+        console.log(count + ' images saved to IndexedDB');
+        try {
+          var bc = new BroadcastChannel('borna_images');
+          bc.postMessage('images-updated');
+          bc.close();
+        } catch(e) {}
+      }).catch(function(err) {
+        console.warn('IndexedDB save failed, falling back to localStorage…', err);
+        try {
+          localStorage.setItem('borna_admin_images', JSON.stringify(data.images));
+        } catch(e) {
+          try {
+            var keys = Object.keys(data.images);
+            var partial = {};
+            keys.forEach(function(k) {
+              try {
+                var test = JSON.stringify(data.images[k]);
+                if (test.length < 500000) partial[k] = data.images[k];
+              } catch(e3) {}
+            });
+            localStorage.setItem('borna_admin_images', JSON.stringify(partial));
+          } catch(e3) {}
+        }
+      });
+    }
+
+    var data = {};
+
+    /* ---- Deep get/set ---- */
+    function getByPath(obj, path) {
+      return path.split('.').reduce(function(o, k) {
+        if (o && typeof o === 'object' && k in o) return o[k];
+        var ki = parseInt(k, 10);
+        if (o && Array.isArray(o) && !isNaN(ki) && ki >= 0 && ki < o.length) return o[ki];
+        return undefined;
+      }, obj);
+    }
+
+    function setByPath(obj, path, val) {
+      var parts = path.split('.');
+      var cur = obj;
+      for (var i = 0; i < parts.length - 1; i++) {
+        var k = parts[i];
+        if (!(k in cur)) cur[k] = isNaN(parseInt(parts[i+1], 10)) ? {} : [];
+        cur = cur[k];
+      }
+      cur[parts[parts.length-1]] = val;
+    }
+
+    /* ---- Load / Save ---- */
+    function loadData() {
+      try {
+        var saved = localStorage.getItem('borna_admin_data');
+        if (saved) {
+          data = JSON.parse(saved);
+          // Ensure nested arrays exist for migration compatibility
+          if (!data.home) data.home = {};
+          if (!data.home.news || data.home.news.length === 0) {
+            data.home.news = JSON.parse(JSON.stringify(DEFAULT_DATA.home.news));
+          }
+          if (!data.product) data.product = {};
+          if (!data.product.blog || data.product.blog.length === 0) {
+            data.product.blog = JSON.parse(JSON.stringify(DEFAULT_DATA.product.blog));
+          }
+        } else {
+          data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        }
+      } catch(e) {
+        data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      }
+      // Load images from IndexedDB into data object
+      data.images = {};
+      DB.loadAll().then(function(dbImages) {
+        data.images = dbImages;
+        renderImageSlots();
+      }).catch(function() {
+        // Fallback: try localStorage for backward compatibility
+        try {
+          var lsRaw = localStorage.getItem('borna_admin_images');
+          if (lsRaw) {
+            data.images = JSON.parse(lsRaw);
+          } else {
+            var adRaw = localStorage.getItem('borna_admin_data');
+            if (adRaw) {
+              var ad = JSON.parse(adRaw);
+              if (ad.images) data.images = ad.images;
+            }
+          }
+          renderImageSlots();
+        } catch(e) {}
+      });
+    }
+
+    function saveData(showToastMsg) {
+      // Strip images before saving to localStorage (images go to IndexedDB separately)
+      var toSave = {};
+      Object.keys(data).forEach(function(k) {
+        if (k !== 'images') toSave[k] = data[k];
+      });
+      try {
+        localStorage.setItem('borna_admin_data', JSON.stringify(toSave));
+        if (showToastMsg !== false) showToast('ذخیره شد ✓', 'success');
+      } catch(e) {
+        showToast('خطا در ذخیره‌سازی: ظرفیت مرورگر پر شده است', 'error');
+      }
+      saveImagesSeparately();
+      // Broadcast data update to site pages (if open in another tab)
+      try {
+        var bc = new BroadcastChannel('borna_images');
+        bc.postMessage('data-updated');
+        bc.close();
+      } catch(e) {}
+    }
+
+    /* ---- Bind form fields ---- */
+    function bindForm() {
+      var fields = document.querySelectorAll('[data-path]');
+      fields.forEach(function(el) {
+        var path = el.getAttribute('data-path');
+        var val = getByPath(data, path);
+        if (val !== undefined && val !== null) {
+          el.value = val;
+        }
+        el.addEventListener('input', function() {
+          setByPath(data, el.getAttribute('data-path'), el.value);
+          saveData(false);
+        });
+        el.addEventListener('change', function() {
+          saveData(true);
+        });
+      });
+    }
+
+    /* ---- Agents admin list ---- */
+    function renderAgentsAdmin() {
+      var container = document.getElementById('agentsAdminList');
+      var items = data.agents && data.agents.items ? data.agents.items : [];
+      var countEl = document.getElementById('agentCount');
+      if (countEl) countEl.textContent = items.length;
+      container.innerHTML = '';
+      items.forEach(function(agent, i) {
+        var div = document.createElement('div');
+        div.className = 'agent-admin-card';
+        div.innerHTML =
+          '<div class="agent-header"><h4>' + escHtml(agent.title) + ' <span style="font-weight:400;color:var(--muted);font-size:12px;">(' + escHtml(agent.province) + ')</span></h4>' +
+            '<button class="btn btn-sm btn-danger" onclick="deleteAgent(' + i + ')" title="حذف نمایندگی"><i class="bi bi-trash"></i></button>' +
+          '</div>' +
+          '<div class="form-row" style="margin-bottom:8px;">' +
+            '<div class="form-group"><label>عنوان</label><input class="form-control agent-input" data-ai="' + i + '" data-field="title" value="' + escHtml(agent.title) + '"></div>' +
+            '<div class="form-group"><label>مدیر</label><input class="form-control agent-input" data-ai="' + i + '" data-field="manager" value="' + escHtml(agent.manager) + '"></div>' +
+          '</div>' +
+          '<div class="form-row" style="margin-bottom:8px;">' +
+            '<div class="form-group"><label>استان</label><input class="form-control agent-input" data-ai="' + i + '" data-field="province" value="' + escHtml(agent.province) + '"></div>' +
+            '<div class="form-group"><label>شهر</label><input class="form-control agent-input" data-ai="' + i + '" data-field="city" value="' + escHtml(agent.city) + '"></div>' +
+          '</div>' +
+          '<div class="form-group"><label>آدرس</label><input class="form-control agent-input" data-ai="' + i + '" data-field="address" value="' + escHtml(agent.address) + '"></div>' +
+          '<div class="form-row" style="margin-bottom:8px;">' +
+            '<div class="form-group"><label>تلفن</label><input class="form-control agent-input" data-ai="' + i + '" data-field="phone" value="' + escHtml(agent.phone) + '" dir="ltr"></div>' +
+            '<div class="form-group"><label>کد عاملیت</label><input class="form-control agent-input" data-ai="' + i + '" data-field="code" value="' + escHtml(agent.code) + '"></div>' +
+          '</div>' +
+          '<div class="form-row">' +
+            '<div class="form-group"><label>وضعیت</label><select class="form-control agent-input" data-ai="' + i + '" data-field="status"><option value="فعال"' + (agent.status === 'فعال' ? ' selected' : '') + '>فعال</option><option value="در انتظار تایید"' + (agent.status === 'در انتظار تایید' ? ' selected' : '') + '>در انتظار تایید</option></select></div>' +
+            '<div class="form-group"><label>مختصات GPS (اختیاری)</label><input class="form-control agent-input" data-ai="' + i + '" data-field="geo" value="' + escHtml(agent.geo || '') + '" dir="ltr" placeholder="lat,lng"></div>' +
+          '</div>';
+        container.appendChild(div);
+      });
+      // Bind agent inputs
+      container.querySelectorAll('.agent-input').forEach(function(inp) {
+        inp.addEventListener('input', function() {
+          var ai = parseInt(inp.getAttribute('data-ai'), 10);
+          var field = inp.getAttribute('data-field');
+          if (data.agents && data.agents.items && data.agents.items[ai]) {
+            data.agents.items[ai][field] = inp.value;
+          }
+        });
+        inp.addEventListener('change', function() { saveData(true); });
+      });
+    }
+
+    function addAgent() {
+      if (!data.agents) data.agents = { stats: [], mapIntro: '', footerText: '', items: [] };
+      if (!data.agents.items) data.agents.items = [];
+      data.agents.items.push({
+        province: '', city: '', title: 'نمایندگی جدید', manager: '',
+        address: '', phone: '', code: '', status: 'فعال', geo: ''
+      });
+      renderAgentsAdmin();
+      saveData(true);
+    }
+
+    function deleteAgent(index) {
+      if (!data.agents || !data.agents.items) return;
+      if (!confirm('آیا از حذف این نمایندگی اطمینان دارید؟')) return;
+      data.agents.items.splice(index, 1);
+      renderAgentsAdmin();
+      saveData(true);
+    }
+
+    /* ---- News admin ---- */
+    function renderNewsAdmin() {
+      var container = document.getElementById('newsAdminList');
+      if (!container) return;
+      var items = data.home && data.home.news ? data.home.news : [];
+      var countEl = document.getElementById('newsCount');
+      if (countEl) countEl.textContent = items.length;
+      container.innerHTML = '';
+      items.forEach(function(item, i) {
+        var div = document.createElement('div');
+        div.className = 'agent-admin-card';
+        div.innerHTML =
+          '<div class="agent-header"><h4>خبر ' + (i + 1) + '</h4>' +
+            '<button class="btn btn-sm btn-danger" onclick="deleteNewsItem(' + i + ')" title="حذف خبر"><i class="bi bi-trash"></i></button>' +
+          '</div>' +
+          '<div class="form-row" style="margin-bottom:8px;">' +
+            '<div class="form-group"><label>تاریخ</label><input class="form-control news-input" data-ni="' + i + '" data-field="date" value="' + escHtml(item.date) + '"></div>' +
+            '<div class="form-group"><label>عنوان</label><input class="form-control news-input" data-ni="' + i + '" data-field="title" value="' + escHtml(item.title) + '"></div>' +
+          '</div>' +
+          '<div class="form-group"><label>متن خبر</label><textarea class="form-control news-input" data-ni="' + i + '" data-field="desc" rows="2">' + escHtml(item.desc) + '</textarea></div>';
+        container.appendChild(div);
+      });
+      container.querySelectorAll('.news-input').forEach(function(inp) {
+        inp.addEventListener('input', function() {
+          var ni = parseInt(inp.getAttribute('data-ni'), 10);
+          var field = inp.getAttribute('data-field');
+          if (data.home && data.home.news && data.home.news[ni]) {
+            data.home.news[ni][field] = inp.value;
+          }
+        });
+        inp.addEventListener('change', function() { saveData(true); });
+      });
+    }
+
+    function addNewsItem() {
+      if (!data.home) data.home = {};
+      if (!data.home.news) data.home.news = [];
+      data.home.news.push({ date: '۱ فروردین ۱۴۰۵', title: 'خبر جدید', desc: 'متن خبر جدید را اینجا وارد کنید.' });
+      renderNewsAdmin();
+      saveData(true);
+    }
+
+    function deleteNewsItem(index) {
+      if (!data.home || !data.home.news) return;
+      if (!confirm('آیا از حذف این خبر اطمینان دارید؟')) return;
+      data.home.news.splice(index, 1);
+      renderNewsAdmin();
+      saveData(true);
+    }
+
+    /* ---- Blog admin ---- */
+    function renderBlogAdmin() {
+      var container = document.getElementById('blogAdminList');
+      if (!container) return;
+      var items = data.product && data.product.blog ? data.product.blog : [];
+      var countEl = document.getElementById('blogCount');
+      if (countEl) countEl.textContent = items.length;
+      container.innerHTML = '';
+      items.forEach(function(item, i) {
+        var div = document.createElement('div');
+        div.className = 'agent-admin-card';
+        div.innerHTML =
+          '<div class="agent-header"><h4>مقاله ' + (i + 1) + '</h4>' +
+            '<button class="btn btn-sm btn-danger" onclick="deleteBlogItem(' + i + ')" title="حذف مقاله"><i class="bi bi-trash"></i></button>' +
+          '</div>' +
+          '<div class="form-row" style="margin-bottom:8px;">' +
+            '<div class="form-group"><label>تاریخ</label><input class="form-control blog-input" data-bi="' + i + '" data-field="date" value="' + escHtml(item.date) + '"></div>' +
+            '<div class="form-group"><label>عنوان</label><input class="form-control blog-input" data-bi="' + i + '" data-field="title" value="' + escHtml(item.title) + '"></div>' +
+          '</div>' +
+          '<div class="form-group"><label>متن مقاله</label><textarea class="form-control blog-input" data-bi="' + i + '" data-field="desc" rows="2">' + escHtml(item.desc) + '</textarea></div>';
+        container.appendChild(div);
+      });
+      container.querySelectorAll('.blog-input').forEach(function(inp) {
+        inp.addEventListener('input', function() {
+          var bi = parseInt(inp.getAttribute('data-bi'), 10);
+          var field = inp.getAttribute('data-field');
+          if (data.product && data.product.blog && data.product.blog[bi]) {
+            data.product.blog[bi][field] = inp.value;
+          }
+        });
+        inp.addEventListener('change', function() { saveData(true); });
+      });
+    }
+
+    function addBlogItem() {
+      if (!data.product) data.product = {};
+      if (!data.product.blog) data.product.blog = [];
+      data.product.blog.push({ date: '۱ فروردین ۱۴۰۵', title: 'مقاله جدید', desc: 'متن مقاله جدید را اینجا وارد کنید.' });
+      renderBlogAdmin();
+      saveData(true);
+    }
+
+    function deleteBlogItem(index) {
+      if (!data.product || !data.product.blog) return;
+      if (!confirm('آیا از حذف این مقاله اطمینان دارید؟')) return;
+      data.product.blog.splice(index, 1);
+      renderBlogAdmin();
+      saveData(true);
+    }
+
+    function escHtml(s) {
+      if (!s) return '';
+      return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    /* ---- Tab switching ---- */
+    function initTabs() {
+      var links = document.querySelectorAll('#adminSidebar a[data-tab]');
+      links.forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          links.forEach(function(l) { l.classList.remove('active'); });
+          a.classList.add('active');
+          document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
+          document.getElementById(a.getAttribute('data-tab')).classList.add('active');
+        });
+      });
+    }
+
+    /* ---- Login / Logout ---- */
+    function doLogin() {
+      var pass = document.getElementById('loginPass').value;
+      if (pass === PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').classList.add('active');
+        initApp();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+    document.getElementById('loginPass').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    function doLogout() {
+      document.getElementById('loginScreen').style.display = '';
+      document.getElementById('dashboard').classList.remove('active');
+      document.getElementById('loginPass').value = '';
+      document.getElementById('loginError').style.display = 'none';
+    }
+
+    /* ---- Toast ---- */
+    function showToast(msg, type) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast ' + (type || '');
+      el.classList.add('show');
+      setTimeout(function() {
+        el.classList.remove('show');
+      }, 2500);
+    }
+
+    /* ---- Export / Import ---- */
+    function exportJSON() {
+      var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'borna-admin-data-' + new Date().toISOString().slice(0,10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('فایل JSON با موفقیت دانلود شد', 'success');
+    }
+
+    function importJSON(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          var imported = JSON.parse(ev.target.result);
+          data = imported;
+          saveData(false);
+          refreshUI();
+          showToast('داده‌ها با موفقیت بازیابی شدند', 'success');
+        } catch(err) {
+          showToast('خطا در خواندن فایل JSON', 'error');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    }
+
+    /* ---- Export only images ---- */
+    function exportImages() {
+      var imgOnly = {};
+      if (data.images) {
+        Object.keys(data.images).forEach(function(k) {
+          imgOnly[k] = { path: data.images[k].path, data: data.images[k].data || '' };
+        });
+      }
+      var blob = new Blob([JSON.stringify(imgOnly)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'borna-images-' + new Date().toISOString().slice(0,10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('تصاویر با موفقیت دانلود شدند', 'success');
+    }
+
+    /* ---- Import only images ---- */
+    function importImages(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          var imported = JSON.parse(ev.target.result);
+          if (!data.images) data.images = {};
+          Object.keys(imported).forEach(function(k) {
+            if (!data.images[k]) data.images[k] = { path: '', data: '' };
+            if (imported[k].data && imported[k].data.length > 50) {
+              data.images[k].data = imported[k].data;
+              data.images[k].path = imported[k].path || 'imported';
+            }
+          });
+          saveData(false);
+          renderImageSlots();
+          showToast('تصاویر با موفقیت بازیابی شدند', 'success');
+        } catch(err) {
+          showToast('خطا در خواندن فایل JSON', 'error');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    }
+
+    /* ---- Apply images to site pages (force-refresh all image slots) ---- */
+    function applyImagesToSite() {
+      saveData(false);
+      renderImageSlots();
+      showToast('تصاویر در حافظه مرورگر ذخیره و برای سایت اعمال شدند. صفحه سایت را رفرش کنید.', 'success');
+    }
+
+    function resetAllData() {
+      if (!confirm('آیا مطمئن هستید؟ تمام تغییرات شما پاک خواهد شد.')) return;
+      if (!confirm('این عمل غیرقابل بازگشت است. ادامه می‌دهید؟')) return;
+      data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      saveData(false);
+      refreshUI();
+      showToast('داده‌ها به حالت پیش‌فرض بازنشانی شدند', 'info');
+    }
+
+    function refreshUI() {
+      var fields = document.querySelectorAll('[data-path]');
+      fields.forEach(function(el) {
+        var path = el.getAttribute('data-path');
+        var val = getByPath(data, path);
+        if (val !== undefined && val !== null) {
+          el.value = val;
+        }
+      });
+      renderAgentsAdmin();
+      renderNewsAdmin();
+      renderBlogAdmin();
+      renderImageSlots();
+    }
+
+    /* ---- Image slots definition (grouped by page/location) ---- */
+    var IMAGE_GROUPS = [
+      {
+        id: 'global', label: 'سراسر سایت (همه صفحات)', icon: 'bi-globe',
+        slots: [
+          { key: 'logo', label: 'لوگوی شرکت', desc: 'لوگوی برنا خودرو پارس — در هدر و فوتر تمام صفحات', defaultPath: 'logo-borna.svg', isVideo: false },
+          { key: 'favicon', label: 'Favicon (آیکون مرورگر)', desc: 'آیکون نمایش داده شده در تب مرورگر', defaultPath: 'favicon.ico', isVideo: false }
+        ]
+      },
+      {
+        id: 'home', label: 'صفحه اصلی (index.html)', icon: 'bi-house-door',
+        slots: [
+          { key: 'heroVideo', label: 'ویدیو پس‌زمینه اسلاید اول', desc: 'ویدیو در اسلاید اول هدر صفحه اصلی', defaultPath: 'mpomyipw-vid-2.mov', isVideo: true },
+          { key: 'heroPoster', label: 'پوستر ویدیو اسلاید اول', desc: 'تصویر پیش از پخش ویدیو — اسلاید اول', defaultPath: 'slider-main.jpg', isVideo: false },
+          { key: 'heroSlide2', label: 'تصویر اسلاید دوم', desc: 'پس‌زمینه اسلاید "کیفیت جهانی"', defaultPath: 'hero-img1.png', isVideo: false },
+          { key: 'heroSlide3', label: 'تصویر اسلاید سوم', desc: 'پس‌زمینه اسلاید "خدمات پایدار"', defaultPath: 'hero-img2.jpg', isVideo: false }
+        ]
+      },
+      {
+        id: 'product', label: 'صفحه محصول (screens/products.html)', icon: 'bi-truck',
+        slots: [
+          { key: 'productPoster', label: 'تصویر اصلی محصول', desc: 'تصویر BORNA 560 S — هدر صفحه محصول', defaultPath: 'poster-product.png', isVideo: false }
+        ]
+      },
+    ];
+
+    /* Flatten for reverse-lookup */
+    var IMAGE_SLOTS = [];
+    IMAGE_GROUPS.forEach(function(g) { g.slots.forEach(function(s) { IMAGE_SLOTS.push(s); }); });
+
+    /* ---- Render image management (grouped) ---- */
+    function renderImageSlots() {
+      var container = document.getElementById('imagesList');
+      if (!container) return;
+      container.innerHTML = '';
+      var imgs = data.images || {};
+
+      IMAGE_GROUPS.forEach(function(group) {
+        // Group header
+        var header = document.createElement('div');
+        header.style.cssText = 'display:flex;align-items:center;gap:10px;padding:16px 20px 8px;margin-top:24px;';
+        header.innerHTML =
+          '<i class="' + group.icon + '" style="font-size:18px;color:var(--accent);"></i>' +
+          '<h3 style="font-size:15px;font-weight:700;margin:0;">' + group.label + '</h3>';
+        container.appendChild(header);
+
+        group.slots.forEach(function(slot) {
+          var info = imgs[slot.key] || { path: slot.defaultPath, data: '' };
+          var hasData = info.data && info.data.length > 50;
+          var src = hasData ? info.data : info.path;
+
+          var div = document.createElement('div');
+          div.className = 'img-card';
+          div.id = 'img-card-' + slot.key;
+
+          var preview = document.createElement('div');
+          preview.className = 'img-preview';
+          preview.id = 'img-preview-' + slot.key;
+
+          if (hasData || (info.path && !slot.isVideo)) {
+            var img = document.createElement('img');
+            img.src = src;
+            img.alt = '';
+            img.onerror = function() {
+              preview.innerHTML = '<div class="no-img"><i class="bi bi-image"></i>خطا</div>';
+            };
+            preview.appendChild(img);
+          } else if (slot.isVideo && info.path) {
+            var vid = document.createElement('video');
+            vid.src = src;
+            vid.muted = true;
+            vid.preload = 'metadata';
+            vid.onerror = function() {
+              preview.innerHTML = '<div class="no-img"><i class="bi bi-film"></i>خطا</div>';
+            };
+            preview.appendChild(vid);
+          } else {
+            preview.innerHTML = '<div class="no-img"><i class="bi bi-image"></i>بدون تصویر</div>';
+          }
+
+          var infoDiv = document.createElement('div');
+          infoDiv.className = 'img-info';
+
+          var displayPath = info.path || slot.defaultPath;
+          infoDiv.innerHTML =
+            '<h4>' + slot.label + '</h4>' +
+            '<div class="img-desc">' + slot.desc + '</div>' +
+            '<div class="img-path" id="img-path-' + slot.key + '" title="' + escHtml(displayPath) + '">' + escHtml(displayPath) + '</div>' +
+            '<div class="img-actions">' +
+              '<button class="btn btn-sm btn-primary" onclick="uploadImage(\'' + slot.key + '\')"><i class="bi bi-upload"></i> آپلود فایل</button>' +
+              '<input type="file" id="img-file-' + slot.key + '" accept="' + (slot.isVideo ? 'video/*' : 'image/*') + '" onchange="handleImageFile(event, \'' + slot.key + '\')">' +
+              '<button class="btn btn-sm btn-outline" onclick="resetImage(\'' + slot.key + '\')"><i class="bi bi-arrow-counterclockwise"></i> پیش‌فرض</button>' +
+              '<button class="btn btn-sm btn-outline" onclick="previewImage(\'' + slot.key + '\')"><i class="bi bi-eye"></i> پیش‌نمایش کامل</button>' +
+            '</div>';
+
+          div.appendChild(preview);
+          div.appendChild(infoDiv);
+          container.appendChild(div);
+        });
+      });
+    }
+
+    /* ---- Image upload ---- */
+    function uploadImage(key) {
+      document.getElementById('img-file-' + key).click();
+    }
+
+    function handleImageFile(e, key) {
+      var file = e.target.files[0];
+      if (!file) return;
+      if (!data.images) data.images = {};
+      if (!data.images[key]) data.images[key] = { path: '', data: '' };
+
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        data.images[key].data = ev.target.result;
+        data.images[key].path = file.name;
+        saveData(false);
+        refreshImageSlot(key);
+        showToast('تصویر "' + file.name + '" با موفقیت آپلود شد', 'success');
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    }
+
+    /* ---- Reset image to default ---- */
+    function resetImage(key) {
+      var slot = IMAGE_SLOTS.find(function(s) { return s.key === key; });
+      if (!slot) return;
+      if (!data.images) data.images = {};
+      data.images[key] = { path: slot.defaultPath, data: '' };
+      saveData(false);
+      refreshImageSlot(key);
+      showToast('تصویر به حالت پیش‌فرض بازنشانی شد', 'info');
+    }
+
+    /* ---- Refresh single image slot ---- */
+    function refreshImageSlot(key) {
+      var slot = IMAGE_SLOTS.find(function(s) { return s.key === key; });
+      if (!slot) return;
+      var info = (data.images && data.images[key]) || { path: slot.defaultPath, data: '' };
+      var hasData = info.data && info.data.length > 50;
+      var src = hasData ? info.data : info.path;
+
+      // Update preview
+      var preview = document.getElementById('img-preview-' + key);
+      if (preview) {
+        preview.innerHTML = '';
+        if (hasData || (info.path && !slot.isVideo)) {
+          var img = document.createElement('img');
+          img.src = src;
+          img.alt = '';
+          img.onerror = function() { preview.innerHTML = '<div class="no-img"><i class="bi bi-image"></i>خطا</div>'; };
+          preview.appendChild(img);
+        } else if (slot.isVideo && info.path) {
+          var vid = document.createElement('video');
+          vid.src = src;
+          vid.muted = true;
+          vid.preload = 'metadata';
+          vid.onerror = function() { preview.innerHTML = '<div class="no-img"><i class="bi bi-film"></i>خطا</div>'; };
+          preview.appendChild(vid);
+        } else {
+          preview.innerHTML = '<div class="no-img"><i class="bi bi-image"></i>بدون تصویر</div>';
+        }
+      }
+
+      // Update path display
+      var pathEl = document.getElementById('img-path-' + key);
+      if (pathEl) {
+        var display = hasData ? '↑ آپلود شده در حافظه (' + Math.round(info.data.length / 1024) + 'KB)' : (info.path || slot.defaultPath);
+        pathEl.textContent = display;
+        pathEl.title = display;
+      }
+    }
+
+    /* ---- Preview full-size ---- */
+    function previewImage(key) {
+      var slot = IMAGE_SLOTS.find(function(s) { return s.key === key; });
+      if (!slot) return;
+      var info = (data.images && data.images[key]) || { path: slot.defaultPath, data: '' };
+      var hasData = info.data && info.data.length > 50;
+      var src = hasData ? info.data : info.path;
+      if (!src) { showToast('تصویری برای نمایش وجود ندارد', 'error'); return; }
+      window.open(src, '_blank');
+    }
+
+    /* ---- Refresh all image slots ---- */
+    function refreshAllImages() {
+      IMAGE_SLOTS.forEach(function(slot) { refreshImageSlot(slot.key); });
+    }
+
+    /* ---- Mobile sidebar toggle ---- */
+    function toggleSidebar() {
+      var s = document.getElementById('adminSidebar');
+      var o = document.getElementById('sidebarOverlay');
+      s.classList.toggle('open');
+      o.classList.toggle('show');
+    }
+    function closeSidebar() {
+      document.getElementById('adminSidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+
+    function initApp() {
+      loadData();
+      bindForm();
+      renderAgentsAdmin();
+      renderImageSlots();
+      renderNewsAdmin();
+      renderBlogAdmin();
+      initTabs();
+      // Close sidebar on tab click (mobile)
+      document.querySelectorAll('#adminSidebar a[data-tab]').forEach(function(a) {
+        a.addEventListener('click', function() { closeSidebar(); });
+      });
+      // Save to persist any migrated default data
+      saveData(false);
+    }
+  </script>
+</body>
+</html>

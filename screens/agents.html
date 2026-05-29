@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-text="seo.siteTitle">شبکه نمایندگی — برنا خودرو پارس</title>
+  <meta name="description" content="شبکه نمایندگی برنا خودرو پارس — نمایندگی‌های مجاز فروش و خدمات در سراسر کشور" data-text="seo.metaDescription">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" data-img="favicon" href="../favicon.ico" />
+  <link rel="stylesheet" href="../css/borna.css">
+  <style>
+    html { scroll-behavior: smooth; }
+    .search-box {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 28px;
+      margin-bottom: 40px;
+    }
+    .search-row {
+      display: flex;
+      gap: 16px;
+    }
+    .search-row .form-group { flex: 1; margin-bottom: 0; }
+    .region-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .region-group { margin-bottom: 40px; }
+    .region-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(19, 62, 135, 0.1);
+    }
+    .agent-count {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .agent-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 20px;
+      transition: box-shadow 0.2s, transform 0.2s;
+      border: 1px solid var(--border);
+    }
+    .agent-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .agent-card h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--fg);
+      margin-bottom: 6px;
+    }
+    .agent-card .manager {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .agent-card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      line-height: 1.6;
+    }
+    .agent-card .agent-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-top: 10px;
+    }
+    .agent-badge.active { background: #dcfce7; color: #15803d; }
+    .agent-badge.pending { background: #fef3c7; color: #b45309; }
+    .agent-card .phone-link {
+      display: inline-block;
+      direction: ltr;
+      unicode-bidi: embed;
+    }
+    .agent-card .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      margin-right: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 4px 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .agent-card .map-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .stat-card .num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent);
+      font-family: var(--font);
+    }
+    .stat-card .label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      display: none;
+    }
+    .no-results i { font-size: 48px; margin-bottom: 16px; display: block; }
+    .no-results h3 { font-size: 18px; margin-bottom: 8px; color: var(--fg); }
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .region-grid { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; }
+      .search-row .btn { width: 100%; }
+    }
+    .map-section { margin-bottom: 40px; }
+    .map-section .section-sub { margin-bottom: 24px; }
+    .iran-map-wrapper {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .iran-map { display: block; width: 100%; height: auto; }
+    .iran-map .province {
+      transition: fill 0.2s, opacity 0.2s;
+      stroke: #fff;
+      stroke-width: 1;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      cursor: pointer;
+    }
+    .iran-map .province-bg { fill: #e8e6e2; cursor: default; }
+    .iran-map .province-bg:hover { fill: #ddd9d4; }
+    .iran-map .province-agent {
+      fill: #b3c6e6;
+      cursor: pointer;
+    }
+    .iran-map .province-agent:hover {
+      fill: #133e87;
+      opacity: 0.85;
+    }
+    .iran-map .province-agent.selected {
+      fill: #133e87;
+    }
+    #iran-map-container { min-height: 400px; }
+    #iran-map-container svg.iran-map { display: block; width: 100%; height: auto; }
+    .map-legend {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .map-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .map-legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+    }
+    .map-legend-dot.has-agent { background: #133e87; }
+    .map-legend-dot.no-agent { background: #e8e6e2; border: 1px solid #d1d5db; }
+    @media (max-width: 768px) {
+      .iran-map-wrapper { padding: 12px; }
+    }
+    @media (max-width: 480px) {
+      .iran-map-wrapper { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="header-actions">
+        <button class="btn-icon menu-toggle" aria-label="منو"><i class="bi bi-list"></i></button>
+      </div>
+      <div class="header-logo">
+        <a href="../index.html"><img src="../logo-borna.svg" alt="برنا خودرو پارس" data-img="logo" style="height:34px;width:auto;" /></a>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">خانه</a>
+        <div class="has-dropdown">
+          <a href="products.html">محصولات <i class="bi bi-chevron-down" style="font-size:9px;"></i></a>
+          <div class="dropdown-menu">
+            <a href="products.html">کامیون BORNA 560 S</a>
+          </div>
+        </div>
+        <a href="sales.html">فروش</a>
+        <a href="after-sales.html">خدمات پس از فروش</a>
+        <a href="agents.html" class="active">شبکه نمایندگی</a>
+        <a href="about.html">درباره ما</a>
+        <a href="contact.html">تماس با ما</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mobile-overlay"></div>
+  <div class="mobile-menu">
+    <div class="mobile-menu-header">
+      <h3>برنا خودرو پارس</h3>
+      <button class="btn-icon mobile-menu-close" aria-label="بستن"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="../index.html">خانه</a>
+      <a href="products.html">محصولات</a>
+      <div class="sub-nav">
+        <a href="products.html">کامیون BORNA 560 S</a>
+      </div>
+      <a href="sales.html">فروش</a>
+      <a href="after-sales.html">خدمات پس از فروش</a>
+      <a href="agents.html">شبکه نمایندگی</a>
+      <a href="about.html">درباره ما</a>
+      <a href="contact.html">تماس با ما</a>
+    </nav>
+  </div>
+
+  <section class="page-header">
+    <h1>شبکه نمایندگی</h1>
+    <p>نمایندگی‌های مجاز فروش و خدمات پس از فروش برنا خودرو پارس در سراسر کشور</p>
+    <div class="breadcrumb">
+      <a href="../index.html">خانه</a>
+      <span>/</span>
+      <span>شبکه نمایندگی</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <!-- Stats -->
+      <div class="stats-row fade-up">
+        <div class="stat-card">
+          <div class="num" data-text="agents.stats.0.num">۱۰</div>
+          <div class="label" data-text="agents.stats.0.label">نمایندگی فعال</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" data-text="agents.stats.1.num">۱۵</div>
+          <div class="label" data-text="agents.stats.1.label">استان تحت پوشش</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" data-text="agents.stats.2.num">۷</div>
+          <div class="label" data-text="agents.stats.2.label">استان دارای نمایندگی</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" data-text="agents.stats.3.num">۱۰۰٪</div>
+          <div class="label" data-text="agents.stats.3.label">ضمانت اصالت کالا</div>
+        </div>
+      </div>
+
+      <!-- Iran Map -->
+      <div class="map-section fade-up">
+        <h3 style="margin-bottom:8px; font-weight:700;">نقشه شبکه نمایندگی</h3>
+        <p style="color:var(--muted); font-size:14px; margin-bottom:24px;" data-text="agents.mapIntro">روی هر استان کلیک کنید تا نمایندگی‌های آن را ببینید</p>
+        <div class="iran-map-wrapper">
+          <div id="iran-map-container" data-img="iranMap"></div>
+          <div class="map-legend">
+            <div class="map-legend-item"><div class="map-legend-dot has-agent"></div> دارای نمایندگی</div>
+            <div class="map-legend-item"><div class="map-legend-dot no-agent"></div> فاقد نمایندگی</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-box fade-up">
+        <h3 style="margin-bottom:16px; font-weight:700;">جستجوی نمایندگی</h3>
+        <div class="search-row">
+          <div class="form-group">
+            <select class="form-control" id="filter-province">
+              <option value="">همه استان‌ها</option>
+              <option>تهران</option>
+              <option>فارس</option>
+              <option>اصفهان</option>
+              <option>کرمان</option>
+              <option>یزد</option>
+              <option>خراسان رضوی</option>
+              <option>گلستان</option>
+              <option>کرمانشاه</option>
+              <option>هرمزگان</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" id="filter-city">
+              <option value="">همه شهرها</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="min-width:120px;" onclick="document.querySelectorAll('.iran-map .province-agent').forEach(function(p){p.classList.remove('selected')}); filterAgents()"><i class="bi bi-search"></i> جستجو</button>
+          <button class="btn btn-outline" onclick="resetFilter()" style="min-width:100px;">پاک کردن</button>
+        </div>
+      </div>
+
+      <!-- Agent list -->
+      <div id="agent-list">
+
+        <!-- تهران -->
+        <div class="region-group fade-up" data-province="تهران">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان تهران <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="تهران">
+              <h3>نمایندگی تهران، قم و قزوین</h3>
+              <div class="manager"><i class="bi bi-person"></i> حسین اکبری</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> تهران، بزرگراه آیت‌اله سعیدی، شهرک نمایشگاهی، فاز ۱، خیابان ولایت، گلستان دوم، پلاک ۱۱</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۲-۱۴۶۲۶۴۶</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۱۰۱</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=تهران+بزرگراه+آیت‌اله+سعیدی+شهرک+نمایشگاهی+فاز+۱+خیابان+ولایت+گلستان+دوم+پلاک+۱۱" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- فارس -->
+        <div class="region-group fade-up" data-province="فارس">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان فارس، کهگیلویه و بویراحمد و خوزستان <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="شیراز">
+              <h3>تعمیرگاه مرکزی برنا خودرو</h3>
+              <div class="manager"><i class="bi bi-person"></i> تعمیرگاه مرکزی برنا خودرو</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> شیراز، بلوار خلیج فارس، روبروی پلیس راه پل فسا</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۸-۳۳۸۰۸۹۰</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۰۰</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=29.486365247171012,52.63554766245371" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- اصفهان -->
+        <div class="region-group fade-up" data-province="اصفهان">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان اصفهان و چهارمحال بختیاری <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="اصفهان">
+              <h3>نمایندگی اصفهان و چهارمحال بختیاری</h3>
+              <div class="manager"><i class="bi bi-person"></i> ضیایی - بخشنده</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> اصفهان، خیابان فولاد، پلاک ۷۲</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۳-۱۶۷۶۷۶۵</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۱۱۱</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=اصفهان+خیابان+فولاد+پلاک+۷۲" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- کرمان -->
+        <div class="region-group fade-up" data-province="کرمان">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان کرمان <span class="agent-count">۲</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="کرمان">
+              <h3>نمایندگی کرمان</h3>
+              <div class="manager"><i class="bi bi-person"></i> محمدحسین مهدویان</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> کرمان، شهرک صنعتی خضراء، روبروی فرودگاه</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۳-۲۹۸۳۷۰۶</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۷۱</p>
+              <span class="agent-badge pending">در انتظار تایید</span>
+              <a href="https://www.google.com/maps?q=کرمان+شهرک+صنعتی+خضراء+روبروی+فرودگاه" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+            <div class="agent-card" data-city="سیرجان">
+              <h3>نمایندگی سیرجان</h3>
+              <div class="manager"><i class="bi bi-person"></i> دکتر سیدحسن نبوی</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> سیرجان، بلوار شاهد (کمربندی)، روبروی دکتر صادقی</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۳-۱۴۵۲۰۰۱</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۷۳</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=سیرجان+بلوار+شاهد+کمربندی+روبروی+دکتر+صادقی" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- یزد -->
+        <div class="region-group fade-up" data-province="یزد">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان یزد <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="یزد">
+              <h3>نمایندگی یزد</h3>
+              <div class="manager"><i class="bi bi-person"></i> مهرداد شجاعی</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> یزد، کیلومتر ۲ جاده یزد مهریز، جنب فولاد پالش</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۳-۱۰۹۵۶۹۶</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۷۲</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=یزد+کیلومتر+۲+جاده+یزد+مهریز+جنب+فولاد+پالش" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- خراسان -->
+        <div class="region-group fade-up" data-province="خراسان رضوی">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان خراسان رضوی و خراسان شمالی <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="مشهد">
+              <h3>نمایندگی خراسان رضوی و شمالی</h3>
+              <div class="manager"><i class="bi bi-person"></i> یدالله عربی</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> مشهد، شهرک صنعتی طرق، خیابان کارآفرین، کارآفرین ۴ سمت راست، پلاک ۲۰۳</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۵-۱۱۵۵۲۱۵</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۳۱</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=مشهد+شهرک+صنعتی+طرق+خیابان+کارآفرین+کارآفرین+۴+پلاک+۲۰۳" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- گلستان -->
+        <div class="region-group fade-up" data-province="گلستان">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان گلستان، مازندران و سمنان <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="گرگان">
+              <h3>نمایندگی گلستان، مازندران و سمنان</h3>
+              <div class="manager"><i class="bi bi-person"></i> یاسر سعیدی</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> گرگان، کوی مهرآوران، کوچه هیرکان ۱۰، بلوار هیرکان، مجتمع ناصر سعیدی، طبقه همکف، واحد شمالی</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۱-۳۷۱۸۸۹۱</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۲۱</p>
+              <span class="agent-badge pending">در انتظار تایید</span>
+              <a href="https://www.google.com/maps?q=گرگان+کوی+مهرآوران+کوچه+هیرکان+۱۰+بلوار+هیرکان+مجتمع+ناصر+سعیدی" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- کرمانشاه -->
+        <div class="region-group fade-up" data-province="کرمانشاه">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان کرمانشاه، لرستان و ایلام <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="کرمانشاه">
+              <h3>نمایندگی کرمانشاه، لرستان و ایلام</h3>
+              <div class="manager"><i class="bi bi-person"></i> محمد درخور</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> کرمانشاه، جاده اسلام‌آباد غرب، قریه درکه خلیفه‌قلی، روبروی پلیس راه، مجتمع باران</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۱۸-۸۸۷۷۰۲۹</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۶۱</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=کرمانشاه+جاده+اسلام‌آباد+غرب+درکه+خلیفه‌قلی+روبروی+پلیس+راه+مجتمع+باران" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- هرمزگان -->
+        <div class="region-group fade-up" data-province="هرمزگان">
+          <h3 class="region-title"><i class="bi bi-geo-alt"></i> استان هرمزگان و بوشهر <span class="agent-count">۱</span></h3>
+          <div class="region-grid">
+            <div class="agent-card" data-city="بندرعباس">
+              <h3>نمایندگی هرمزگان و بوشهر</h3>
+              <div class="manager"><i class="bi bi-person"></i> علی پایدار</div>
+              <p><i class="bi bi-geo-alt" style="margin-left:4px;"></i> بندرعباس، دهستان آیسین، روستای چه چکر، کوچه امامت ۲۵، کوچه جهاد سازندگی، طبقه همکف</p>
+              <p><i class="bi bi-telephone" style="margin-left:4px;"></i> <span class="phone-link">۰۹۳۹-۴۱۷۰۷۰۸</span></p>
+              <p><i class="bi bi-upc-scan" style="margin-left:4px;"></i> کد عاملیت: ۳۰۸۱</p>
+              <span class="agent-badge active">فعال</span>
+              <a href="https://www.google.com/maps?q=بندرعباس+آیسین+چه+چکر+کوچه+امامت+۲۵+کوچه+جهاد+سازندگی" target="_blank" rel="noopener" class="map-btn"><i class="bi bi-map"></i> نمایش در نقشه</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="no-results" id="no-results">
+        <i class="bi bi-search"></i>
+        <h3>نتیجه‌ای یافت نشد</h3>
+        <p>هیچ نمایندگی‌ای با فیلترهای انتخاب شده یافت نشد.</p>
+      </div>
+
+      <div style="text-align:center; margin-top:20px;">
+        <p style="color:var(--muted); margin-bottom:16px;" data-text="agents.footerText">برای اطلاعات بیشتر و همکاری با ما تماس بگیرید</p>
+        <a href="contact.html" class="btn btn-primary"><i class="bi bi-telephone"></i> تماس با ما</a>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="container" style="max-width: 1196px;">
+      <div class="footer-grid fade-up">
+          <div class="footer-brand">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="../logo-borna.svg" alt="برنا خودرو پارس" data-img="logo" style="height:32px;width:auto;filter:brightness(0) invert(1);">
+            </div>
+<p style="line-height:1.9; text-align:justify; margin-bottom:12px;" data-text="company.footerStory">شرکت برنا خودرو پارس با سرمایه‌گذاری و مشارکت فعالان کلیدی صنعت حمل‌ونقل و متخصصان صنایع زیربنایی تأسیس شده است. ما با عشق به ایران عزیز و اتکا به دانش، تجربه و انگیزه جوانان متخصص ایرانی در صنعت خودروهای تجاری، محصولاتی را عرضه می‌کنیم که دقیقاً پاسخگوی نیازهای واقعی صنعت حمل‌ونقل باشند.</p>
+          </div>
+          <div>
+            <h4>دسترسی سریع</h4>
+            <div class="footer-links">
+              <a href="../index.html">خانه</a>
+              <a href="products.html">محصولات</a>
+              <a href="sales.html">فروش</a>
+              <a href="after-sales.html">خدمات پس از فروش</a>
+              <a href="agents.html">شبکه نمایندگی</a>
+            </div>
+          </div>
+          <div>
+            <h4>درباره ما</h4>
+            <div class="footer-links">
+              <a href="about.html">درباره برنا خودرو</a>
+              <a href="contact.html">تماس با ما</a>
+              <a href="#">فرصت‌های شغلی</a>
+              <a href="#">همکاری تجاری</a>
+              <a href="#">سوالات متداول</a>
+            </div>
+          </div>
+          <div>
+            <h4>اطلاعات تماس</h4>
+            <div class="footer-contact">
+              <p><i class="bi bi-geo-alt"></i> <span data-text="company.address">تهران، کیلومتر ۱۵ جاده مخصوص کرج، بعد از پل ایران خودرو، جنب فرش وزرا، پلاک ۴۶۷، طبقه اول، واحد ۶</span></p>
+              <p><i class="bi bi-building"></i> <span data-text="company.factoryAddress">شیراز، منطقه ویژه اقتصادی شیراز، بلوار تجارت شرقی</span></p>
+              <p><i class="bi bi-telephone"></i> <span data-text="company.phone">۰۲۱-۴۴۱۸۱۱۳۴</span> — <span data-text="company.factoryPhone">۰۷۱-۳۶۵۴۳۲۱۰</span></p>
+              <p><i class="bi bi-envelope"></i> <span data-text="company.email">info@bornakhodro.co</span></p>
+              <p><i class="bi bi-clock"></i> <span data-text="company.hours">شنبه تا چهارشنبه ۸:۰۰ الی ۱۷:۰۰</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">تمامی حقوق این وب‌سایت متعلق به برنا خودرو پارس می‌باشد. &copy; ۱۴۰۵ <span style="float:left;"><a href="../admin.html" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:11px;"><i class="bi bi-shield-lock"></i> مدیریت سایت</a></span></div>
+      </div>
+    </footer>
+
+  <script src="../js/borna.js"></script>
+  <script>
+    var svgToID = {
+      'East Azarbaijan': 'azarbayjan-e-sharqi', 'West Azarbaijan': 'azarbayjan-e-gharbi', 'Ardebil': 'ardabil',
+      'Esfahan': 'isfahan', 'Alborz': 'alborz', 'Ilam': 'ilam', 'Bushehr': 'bushehr', 'Tehran': 'tehran',
+      'Chahar Mahall and Bakhtiari': 'chahar-mahal-va-bakhtiari', 'Razavi Khorasan': 'khorasan-e-razavi',
+      'South Khorasan': 'khorasan-e-jonubi', 'North Khorasan': 'khorasan-e-shemali', 'Khuzestan': 'khuzestan',
+      'Zanjan': 'zanjan', 'Semnan': 'semnan', 'Sistan and Baluchestan': 'sistan-va-baluchestan', 'Fars': 'fars',
+      'Qazvin': 'qazvin', 'Qom': 'qom', 'Kordestan': 'kordestan', 'Kerman': 'kerman', 'Kermanshah': 'kermanshah',
+      'Kohgiluyeh and Buyer Ahmad': 'kohgiluyeh-va-boyer-ahmad', 'Golestan': 'golestan', 'Gilan': 'gilan',
+      'Lorestan': 'lorestan', 'Mazandaran': 'mazandaran', 'Markazi': 'markazi', 'Hormozgan': 'hormozgan',
+      'Hamadan': 'hamadan', 'Yazd': 'yazd'
+    };
+    var nameMap = {
+      'azarbayjan-e-sharqi': 'آذربایجان شرقی', 'azarbayjan-e-gharbi': 'آذربایجان غربی', 'ardabil': 'اردبیل', 'isfahan': 'اصفهان',
+      'alborz': 'البرز', 'ilam': 'ایلام', 'bushehr': 'بوشهر', 'tehran': 'تهران', 'chahar-mahal-va-bakhtiari': 'چهارمحال و بختیاری',
+      'khorasan-e-jonubi': 'خراسان جنوبی', 'khorasan-e-razavi': 'خراسان رضوی', 'khorasan-e-shemali': 'خراسان شمالی',
+      'khuzestan': 'خوزستان', 'zanjan': 'زنجان', 'semnan': 'سمنان', 'sistan-va-baluchestan': 'سیستان و بلوچستان',
+      'fars': 'فارس', 'qazvin': 'قزوین', 'qom': 'قم', 'kordestan': 'کردستان', 'kerman': 'کرمان', 'kermanshah': 'کرمانشاه',
+      'kohgiluyeh-va-boyer-ahmad': 'کهگیلویه و بویراحمد', 'golestan': 'گلستان', 'gilan': 'گیلان', 'lorestan': 'لرستان',
+      'mazandaran': 'مازندران', 'markazi': 'مرکزی', 'hormozgan': 'هرمزگان', 'hamadan': 'همدان', 'yazd': 'یزد'
+    };
+    var agentProvincesSVG = ['Tehran', 'Fars', 'Esfahan', 'Kerman', 'Yazd', 'Razavi Khorasan', 'Golestan', 'Kermanshah', 'Hormozgan'];
+
+    function filterAgents(province) {
+      if (!province) { province = document.getElementById('filter-province').value; }
+      var groups = document.querySelectorAll('.region-group');
+      var hasVisible = false;
+      groups.forEach(function(g) {
+        if (!province || g.getAttribute('data-province') === province) {
+          g.style.display = ''; hasVisible = true;
+        } else { g.style.display = 'none'; }
+      });
+      document.getElementById('no-results').style.display = hasVisible ? 'none' : 'block';
+    }
+    function resetFilter() {
+      document.getElementById('filter-province').value = '';
+      document.querySelectorAll('.region-group').forEach(function(g) { g.style.display = ''; });
+      document.getElementById('no-results').style.display = 'none';
+      document.querySelectorAll('#iran-map-container .province-agent').forEach(function(p) { p.classList.remove('selected'); });
+    }
+    function initMap() {
+      var c = document.getElementById('iran-map-container');
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '../images/iran-map.svg', true);
+      xhr.onload = function() {
+        c.innerHTML = xhr.responseText;
+        var svg = c.querySelector('svg');
+        svg.classList.add('iran-map');
+        svg.style.width = '100%';
+        svg.style.height = 'auto';
+        svg.querySelectorAll('#label_points circle').forEach(function(lp) {
+          var en = lp.getAttribute('class') || '';
+          var id = svgToID[en] || en.toLowerCase().replace(/\s+/g, '-');
+          var fa = nameMap[id] || en;
+          var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          t.setAttribute('x', lp.getAttribute('cx'));
+          t.setAttribute('y', lp.getAttribute('cy'));
+          t.setAttribute('text-anchor', 'middle');
+          t.setAttribute('dominant-baseline', 'central');
+          t.setAttribute('font-size', fa.length > 12 ? '16' : '20');
+          t.setAttribute('fill', '#2c3e50');
+          t.setAttribute('font-family', 'Peyda, sans-serif');
+          t.setAttribute('font-weight', '600');
+          t.setAttribute('pointer-events', 'none');
+          t.textContent = fa;
+          lp.parentNode.insertBefore(t, lp);
+        });
+        var lpG = svg.querySelector('#label_points');
+        if (lpG) lpG.parentNode.removeChild(lpG);
+        svg.querySelectorAll('.province').forEach(function(p) {
+          var en = p.getAttribute('name') || '';
+          var id = svgToID[en] || en.toLowerCase().replace(/\s+/g, '-');
+          var fa = nameMap[id] || en;
+          var ha = agentProvincesSVG.indexOf(en) !== -1 ? '1' : '0';
+          p.setAttribute('data-name', fa);
+          p.setAttribute('data-has-agent', ha);
+          p.classList.add(ha === '1' ? 'province-agent' : 'province-bg');
+          p.addEventListener('click', function() {
+            if (ha !== '1') { this.style.opacity = '0.5'; var s = this; setTimeout(function() { s.style.opacity = ''; }, 200); return; }
+            document.getElementById('filter-province').value = fa;
+            filterAgents(fa);
+            svg.querySelectorAll('.province-agent').forEach(function(pr) { pr.classList.remove('selected'); });
+            this.classList.add('selected');
+            setTimeout(function() {
+              var searchBox = document.querySelector('.search-box');
+              if (searchBox) {
+                var header = document.querySelector('.header');
+                var targetPos = searchBox.getBoundingClientRect().top + window.pageYOffset - (header ? header.offsetHeight : 80) - 40;
+                window.scrollTo({ top: Math.max(0, targetPos), behavior: 'smooth' });
+              }
+            }, 400);
+          });
+        });
+      };
+      xhr.send();
+    }
+    initMap();
+  </script>
+</body>
+</html>

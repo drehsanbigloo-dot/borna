@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "screens/contact.html",
+  "entry": "screens/contact.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-05-27T23:33:53.768Z",
+  "updatedAt": "2026-05-27T23:34:04.850Z",
+  "metadata": {
+    "inferred": true
+  }
+}

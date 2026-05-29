@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-text="seo.siteTitle">تماس با ما — برنا خودرو پارس</title>
+  <meta name="description" content="اطلاعات تماس برنا خودرو پارس — آدرس، تلفن، ایمیل و فرم ارتباطی" data-text="seo.metaDescription">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" data-img="favicon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/borna.css">
+  <style>
+    /* ============================================================
+       Contact page — premium redesign
+       ============================================================ */
+    .contact-hero {
+      background: linear-gradient(135deg, #0a1628 0%, #133e87 50%, #1e40af 100%);
+      padding: 100px 20px 80px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.02) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .contact-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    }
+    .contact-hero .breadcrumb {
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+    .contact-hero .breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .contact-hero .breadcrumb a:hover { color: #fff; }
+    .contact-hero .breadcrumb span { color: rgba(255,255,255,0.3); margin: 0 8px; }
+    .contact-hero h1 {
+      color: #fff;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .contact-hero p {
+      color: rgba(255,255,255,0.7);
+      font-size: clamp(15px, 1.3vw, 18px);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ---- Contact info section ---- */
+    .contact-info-section {
+      padding: 80px 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .contact-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: box-shadow 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 60px;
+      background: var(--accent);
+      border-radius: 0 0 4px 0;
+    }
+    .contact-card:hover {
+      box-shadow: 0 8px 30px rgba(19,62,135,0.1);
+      transform: translateY(-3px);
+    }
+    .contact-card-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(19,62,135,0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .contact-card-icon i { font-size: 22px; color: var(--accent); }
+    .contact-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+    .contact-card .detail {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+    .contact-card .detail strong { color: var(--fg); font-weight: 600; }
+    .contact-card .phone-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .contact-card .phone-row i {
+      font-size: 12px;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+    .contact-card .label-tag {
+      display: inline-block;
+      background: rgba(19,62,135,0.06);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ---- Maps section ---- */
+    .maps-section {
+      padding: 0 0 80px;
+    }
+    .maps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .map-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .map-card-header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .map-card-header i {
+      font-size: 18px;
+      color: var(--accent);
+    }
+    .map-card-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+    .map-card-header span {
+      font-size: 13px;
+      color: var(--muted);
+      margin-right: auto;
+    }
+    .map-card iframe {
+      width: 100%;
+      height: 320px;
+      display: block;
+      border: 0;
+    }
+
+    /* ---- Form section ---- */
+    .form-section {
+      padding: 80px 0;
+      background: #f5f4f0;
+    }
+    .form-wrapper {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 40px;
+      max-width: 1060px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    .form-sidebar {
+      background: linear-gradient(135deg, #0a1628, #133e87);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .form-sidebar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 70%, rgba(255,255,255,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .form-sidebar h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .form-sidebar > p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 28px;
+      line-height: 1.7;
+      position: relative;
+    }
+    .form-sidebar .info-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .form-sidebar .info-item:last-child { margin-bottom: 0; }
+    .form-sidebar .info-item .icon-box {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .form-sidebar .info-item .icon-box i { font-size: 17px; color: rgba(255,255,255,0.8); }
+    .form-sidebar .info-item .txt { flex: 1; }
+    .form-sidebar .info-item .txt strong {
+      display: block;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 600;
+      margin-bottom: 2px;
+      letter-spacing: 0.3px;
+    }
+    .form-sidebar .info-item .txt span {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+    }
+    .form-main {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .form-main h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+    .form-main > p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-main .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 6px;
+    }
+    .form-main .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e2e4e9;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font);
+      background: #fafbfc;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-main .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(19,62,135,0.1);
+      background: #fff;
+    }
+    .form-main .form-control.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    }
+    .form-main textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-main .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .form-main .btn-submit:hover { background: #1a4a9e; }
+    .form-main .btn-submit:active { transform: scale(0.98); }
+    .form-main .btn-submit:disabled { opacity: 0.6; cursor: default; }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 968px) {
+      .form-wrapper { grid-template-columns: 1fr; gap: 28px; }
+      .form-sidebar { order: -1; }
+    }
+    @media (max-width: 768px) {
+      .contact-hero { padding: 80px 16px 60px; }
+      .contact-info-section { padding: 50px 0; }
+      .contact-grid { gap: 16px; }
+      .contact-card { padding: 24px 20px; }
+      .maps-section { padding: 0 0 50px; }
+      .maps-grid { grid-template-columns: 1fr; }
+      .map-card iframe { height: 260px; }
+      .form-section { padding: 50px 0; }
+      .form-main { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-card::before { height: 40px; }
+    }
+    @media (max-width: 380px) {
+      .contact-hero { padding: 60px 12px 40px; }
+      .contact-card { padding: 20px 16px; }
+      .form-main { padding: 24px 16px; }
+      .map-card-header { flex-wrap: wrap; }
+      .map-card-header span { margin-right: auto; width: 100; margin-top: 4; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="header-actions">
+        <button class="btn-icon menu-toggle" aria-label="منو"><i class="bi bi-list"></i></button>
+      </div>
+      <div class="header-logo">
+        <a href="../index.html"><img src="../logo-borna.svg" alt="برنا خودرو پارس" data-img="logo" style="height:34px;width:auto;"></a>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">خانه</a>
+        <div class="has-dropdown">
+          <a href="products.html">محصولات <i class="bi bi-chevron-down" style="font-size:9px;"></i></a>
+          <div class="dropdown-menu">
+            <a href="products.html">کامیون BORNA 560 S</a>
+          </div>
+        </div>
+        <a href="sales.html">فروش</a>
+        <a href="after-sales.html">خدمات پس از فروش</a>
+        <a href="agents.html">شبکه نمایندگی</a>
+        <a href="about.html">درباره ما</a>
+        <a href="contact.html" class="active">تماس با ما</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mobile-overlay"></div>
+  <div class="mobile-menu">
+    <div class="mobile-menu-header">
+      <h3>برنا خودرو پارس</h3>
+      <button class="btn-icon mobile-menu-close" aria-label="بستن"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="../index.html">خانه</a>
+      <a href="products.html">محصولات</a>
+      <div class="sub-nav">
+        <a href="products.html">کامیون BORNA 560 S</a>
+      </div>
+      <a href="sales.html">فروش</a>
+      <a href="after-sales.html">خدمات پس از فروش</a>
+      <a href="agents.html">شبکه نمایندگی</a>
+      <a href="about.html">درباره ما</a>
+      <a href="contact.html">تماس با ما</a>
+    </nav>
+  </div>
+
+  <!-- Hero -->
+  <section class="contact-hero">
+    <div class="breadcrumb">
+      <a href="../index.html">خانه</a>
+      <span>/</span>
+      <span>تماس با ما</span>
+    </div>
+    <h1>تماس با برنا خودرو پارس</h1>
+    <p>دفتر مرکزی تهران و کارخانه شیراز — راه‌های ارتباطی و فرم درخواست</p>
+  </section>
+
+  <!-- Contact cards -->
+  <section class="contact-info-section">
+    <div class="container">
+      <div class="contact-grid fade-up">
+        <!-- Tehran -->
+        <div class="contact-card fade-up fade-up-1">
+          <div class="contact-card-icon"><i class="bi bi-building"></i></div>
+          <h3>دفتر مرکزی تهران</h3>
+          <p class="detail" data-text-html="contact.address">تهران، کیلومتر ۱۵ جاده مخصوص کرج<br>بعد از پل ایران خودرو، جنب فرش وزرا<br>پلاک ۴۶۷، طبقه اول، واحد ۶</p>
+        </div>
+        <!-- Factory -->
+        <div class="contact-card fade-up fade-up-1">
+          <div class="contact-card-icon"><i class="bi bi-gear-wide"></i></div>
+          <span class="label-tag">کارخانه</span>
+          <h3>شیراز — منطقه ویژه اقتصادی</h3>
+          <p class="detail" data-text-html="contact.factoryAddress">شیراز، منطقه ویژه اقتصادی شیراز<br>بلوار تجارت شرقی</p>
+        </div>
+        <!-- Phone -->
+        <div class="contact-card fade-up fade-up-2">
+          <div class="contact-card-icon"><i class="bi bi-telephone"></i></div>
+          <h3>تلفن‌های تماس</h3>
+          <div class="phone-row"><i class="bi bi-phone"></i> <span class="detail"><strong>دفتر تهران:</strong> <span data-text="contact.phone1">۰۲۱-۴۴۱۸۱۱۳۴</span></span></div>
+          <div class="phone-row"><i class="bi bi-phone"></i> <span class="detail"><strong>دفتر تهران:</strong> <span data-text="contact.phone2">۰۲۱-۴۴۱۸۱۱۴۳</span></span></div>
+          <div class="phone-row"><i class="bi bi-phone"></i> <span class="detail"><strong>کارخانه شیراز:</strong> <span data-text="contact.factoryPhone">۰۷۱-۳۶۵۴۳۲۱۰</span></span></div>
+        </div>
+        <!-- Email + Hours -->
+        <div class="contact-card fade-up fade-up-2">
+          <div class="contact-card-icon"><i class="bi bi-envelope"></i></div>
+          <h3>ایمیل و ساعات کاری</h3>
+          <div class="phone-row"><i class="bi bi-envelope-open"></i> <span class="detail"><span data-text="contact.email1">info@bornakhodro.co</span></span></div>
+          <div class="phone-row"><i class="bi bi-clock"></i> <span class="detail"><span data-text="contact.hoursWeekday">شنبه تا چهارشنبه ۸:۰۰ الی ۱۷:۰۰</span></span></div>
+          <div class="phone-row"><i class="bi bi-clock"></i> <span class="detail">پنجشنبه ۸:۰۰ الی ۱۳:۰۰</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Maps side by side -->
+  <section class="maps-section">
+    <div class="container">
+      <div class="maps-grid fade-up">
+        <div class="map-card fade-up fade-up-1">
+          <div class="map-card-header">
+            <i class="bi bi-building"></i>
+            <h3>دفتر مرکزی تهران</h3>
+            <span data-text="contact.address">تهران، کیلومتر ۱۵ جاده مخصوص کرج</span>
+          </div>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2000!2d51.229776!3d35.712301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQyJzQ0LjMiTiA1McKwMTMnNDcuMiJF!5e0!3m2!1sfa!2s!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="map-card fade-up fade-up-1">
+          <div class="map-card-header">
+            <i class="bi bi-geo-alt"></i>
+            <h3>کارخانه شیراز</h3>
+            <span data-text-html="contact.factoryAddress">شیراز، منطقه ویژه اقتصادی</span>
+          </div>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2000!2d52.600899!3d29.453068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjnCsDI3JzExLjAiTiA1MsKwMzYnMDMuMiJF!5e0!3m2!1sfa!2s!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="form-section">
+    <div class="container">
+      <div class="form-wrapper fade-up">
+        <div class="form-sidebar fade-up fade-up-1">
+          <h3>ارسال پیام</h3>
+          <p>کارشناسان ما در اسرع وقت پاسخگوی شما خواهند بود</p>
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-building"></i></div>
+            <div class="txt"><strong>دفتر مرکزی</strong><span data-text="contact.address">تهران، کیلومتر ۱۵ جاده مخصوص کرج ...</span></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-geo-alt"></i></div>
+            <div class="txt"><strong>کارخانه شیراز</strong><span data-text-html="contact.factoryAddress">شیراز، منطقه ویژه اقتصادی شیراز</span></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-telephone"></i></div>
+            <div class="txt"><strong>تلفن</strong><span><span data-text="contact.phone1">۰۲۱-۴۴۱۸۱۱۳۴</span> / <span data-text="contact.phone2">۰۲۱-۴۴۱۸۱۱۴۳</span></span></div>
+          </div>
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-envelope"></i></div>
+            <div class="txt"><strong>ایمیل</strong><span data-text="contact.email1">info@bornakhodro.co</span></div>
+          </div>
+        </div>
+        <div class="form-main fade-up fade-up-1">
+          <h3>فرم ارتباطی</h3>
+          <p>پیام خود را بنویسید — برای ما مهم است</p>
+          <form onsubmit="handleSubmit(event, 'پیام شما با موفقیت ارسال شد. به زودی با شما تماس می‌گیریم.')">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">نام و نام خانوادگی</label>
+                <input type="text" class="form-control" required placeholder="نام خود را وارد کنید">
+              </div>
+              <div class="form-group">
+                <label class="form-label">شماره تماس</label>
+                <input type="tel" class="form-control" required placeholder="۰۹۱۲XXXXXXX">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">ایمیل</label>
+                <input type="email" class="form-control" placeholder="example@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">موضوع</label>
+                <input type="text" class="form-control" required placeholder="موضوع پیام">
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">پیام</label>
+              <textarea class="form-control" required placeholder="متن پیام خود را وارد کنید..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit"><i class="bi bi-send"></i> ارسال پیام</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" style="margin-top:0;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img src="../logo-borna.svg" alt="برنا خودرو پارس" data-img="logo" style="height:28px;width:auto;filter:brightness(0) invert(1);" />
+          </div>
+<p style="line-height:1.9; text-align:justify; margin-bottom:12px;" data-text="company.footerStory">شرکت برنا خودرو پارس با سرمایه‌گذاری و مشارکت فعالان کلیدی صنعت حمل‌ونقل و متخصصان صنایع زیربنایی تأسیس شده است. ما با عشق به ایران عزیز و اتکا به دانش، تجربه و انگیزه جوانان متخصص ایرانی در صنعت خودروهای تجاری، محصولاتی را عرضه می‌کنیم که دقیقاً پاسخگوی نیازهای واقعی صنعت حمل‌ونقل باشند.</p>
+          </div>
+        <div>
+          <h4>دسترسی سریع</h4>
+          <div class="footer-links">
+            <a href="../index.html">خانه</a>
+            <a href="products.html">محصولات</a>
+            <a href="sales.html">فروش</a>
+            <a href="after-sales.html">خدمات پس از فروش</a>
+            <a href="agents.html">شبکه نمایندگی</a>
+          </div>
+        </div>
+        <div>
+          <h4>درباره ما</h4>
+          <div class="footer-links">
+            <a href="about.html">درباره برنا خودرو</a>
+            <a href="contact.html">تماس با ما</a>
+            <a href="#">فرصت‌های شغلی</a>
+            <a href="#">همکاری تجاری</a>
+          </div>
+        </div>
+        <div>
+          <h4>اطلاعات تماس</h4>
+          <div class="footer-contact">
+            <p><i class="bi bi-geo-alt"></i> <span data-text="company.address">تهران، کیلومتر ۱۵ جاده مخصوص کرج، بعد از پل ایران خودرو، جنب فرش وزرا، پلاک ۴۶۷، طبقه اول، واحد ۶</span></p>
+            <p><i class="bi bi-building"></i> <span data-text="company.factoryAddress">شیراز، منطقه ویژه اقتصادی شیراز، بلوار تجارت شرقی</span></p>
+            <p><i class="bi bi-telephone"></i> <span data-text="company.phone">۰۲۱-۴۴۱۸۱۱۳۴</span> — <span data-text="company.factoryPhone">۰۷۱-۳۶۵۴۳۲۱۰</span></p>
+            <p><i class="bi bi-envelope"></i> <span data-text="company.email">info@bornakhodro.co</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">تمامی حقوق این وب‌سایت متعلق به برنا خودرو پارس می‌باشد. &copy; ۱۴۰۵ <span style="float:left;"><a href="../admin.html" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:11px;"><i class="bi bi-shield-lock"></i> مدیریت سایت</a></span></div>
+    </div>
+  </footer>
+
+  <script src="../js/borna.js"></script>
+
+</body></html>

@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>برنا خودرو پارس — قدرتمند، پایدار، پیشرو</title>
+  <meta name="description" content="برنا خودرو پارس — تولید کننده خودروهای تجاری و صنعتی با استانداردهای جهانی" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="https://lib.arvancloud.ir/font-awesome/6.3.0/css/all.min.css" />
+  <style>
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 300; src: url(fonts/Peyda-Light.woff2) format('woff2'); }
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 400; src: url(fonts/Peyda-Regular.woff2) format('woff2'); }
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 500; src: url(fonts/Peyda-Medium.woff2) format('woff2'); }
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 600; src: url(fonts/Peyda-SemiBold.woff2) format('woff2'); }
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 700; src: url(fonts/Peyda-Bold.woff2) format('woff2'); }
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 800; src: url(fonts/Peyda-ExtraBold.woff2) format('woff2'); }
+    @font-face { font-family: Peyda; font-style: normal; font-weight: 900; src: url(fonts/Peyda-Black.woff2) format('woff2'); }
+
+    :root {
+      --primary: #133e87;
+      --primary-dark: #0d1a30;
+      --primary-light: #1e40af;
+      --primary-rgb: 19,62,135;
+      --secondary: #edebe8;
+      --secondary-dark: #d1cfcc;
+      --accent: #c96442;
+      --accent-light: #d97757;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --text-dark: #1e293b;
+      --text-gray: #64748b;
+      --bg-card: rgba(255,255,255,0.95);
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 15px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--secondary);
+      color: var(--text-dark);
+      direction: rtl;
+      font-family: Peyda, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      text-align: right;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== Notification Bar ===== */
+    .notification-bar {
+      background: var(--primary);
+      color: #fff;
+      font-size: 14px;
+      padding: 8px 15px;
+      text-align: center;
+      width: 100%;
+    }
+    .notification-bar a {
+      color: #fff;
+      display: block;
+      text-decoration: none;
+    }
+    .notification-bar a:hover { color: #f0f0f0; }
+
+    /* ===== Header ===== */
+    .header {
+      background: var(--secondary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+    }
+    .header-logo { flex-shrink: 0; }
+    .header-logo img { height: 40px; }
+    .header-nav { display: flex; flex: 1; justify-content: center; }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .nav-list a {
+      color: var(--primary);
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+    .nav-list a:hover,
+    .nav-list a.active {
+      background: #d5d3d0;
+      color: var(--primary);
+    }
+    .nav-item { position: relative; }
+    .dropdown-menu-custom {
+      background: var(--secondary);
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: block;
+      list-style: none;
+      min-width: 200px;
+      opacity: 0;
+      padding: 8px 0;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      visibility: hidden;
+      z-index: 1000;
+    }
+    .nav-item:hover .dropdown-menu-custom {
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+    }
+    .dropdown-menu-custom a {
+      display: block;
+      padding: 8px 16px;
+      color: var(--primary);
+      text-align: right;
+      font-size: 14px;
+    }
+    .dropdown-menu-custom a:hover { background: #d5d3d0; }
+
+    /* ===== Mobile Menu Trigger ===== */
+    .menu-toggle { display: none; background: none; border: none; color: var(--primary); font-size: 24px; cursor: pointer; padding: 4px; }
+
+    /* ===== Hero Slider ===== */
+    .hero-slider {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      overflow: hidden;
+      direction: ltr;
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .hero-slide-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+    .hero-tag {
+      color: var(--accent-light);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .hero-title {
+      color: #fff;
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin: 12px 0 16px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero-sub {
+      color: rgba(255,255,255,0.9);
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      max-width: 600px;
+    }
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--secondary);
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 14px 32px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .hero-btn:hover {
+      background: var(--primary);
+      color: var(--secondary);
+    }
+    .slider-controls {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .slider-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      border: none;
+      color: var(--primary);
+      font-size: 20px;
+      cursor: pointer;
+      pointer-events: all;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slider-btn:hover { background: #fff; transform: scale(1.1); }
+    .slider-dots {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .slider-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .slider-dot.active { background: #fff; transform: scale(1.2); }
+
+    /* ===== Welcome Section ===== */
+    .section { padding: 80px 0; }
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--text-gray);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 48px;
+      line-height: 1.8;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: 15px;
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: all 0.4s;
+      cursor: default;
+    }
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(19,62,135,0.15);
+    }
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .feature-card:hover .feature-icon {
+      animation: rotate360 0.6s ease;
+    }
+    @keyframes rotate360 {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+    .feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .feature-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* ===== Product Showcase ===== */
+    .product-showcase {
+      background: #fff;
+      padding: 80px 0;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .product-image-wrapper {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .product-image-wrapper img {
+      width: 100%;
+      transition: transform 0.5s;
+    }
+    .product-image-wrapper:hover img { transform: scale(1.03); }
+    .product-info { }
+    .product-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .product-name {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+    .product-desc {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .product-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .product-spec {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .product-spec i {
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+    /* ===== Gallery ===== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .gallery-grid .gallery-item:first-child {
+      grid-column: 1 / -1;
+      height: 350px;
+    }
+    .gallery-item {
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      height: 300px;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-zoom {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: transform 0.3s;
+    }
+    .gallery-item:hover .gallery-zoom { transform: translate(-50%, -50%) scale(1); }
+
+    /* ===== Map Section ===== */
+    .map-section {
+      position: relative;
+      padding: 60px 0;
+    }
+    .map-section img { border-radius: 15px; width: 100%; }
+    .map-info-box {
+      position: absolute;
+      top: 50%;
+      right: 30px;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 15px;
+      padding: 28px;
+      max-width: 320px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .map-info-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .map-info-text {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .map-info-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #007bff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .map-info-btn:hover { background: rgba(0,123,255,0.1); color: #0056b3; }
+
+    /* ===== Blog Section ===== */
+    .blog-section {
+      background: var(--secondary);
+      padding: 80px 0;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .blog-card {
+      background: #f5f5f5;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all 0.4s;
+    }
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+    .blog-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .blog-body {
+      padding: 20px;
+    }
+    .blog-body h4 {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .blog-body a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .blog-body a:hover { color: var(--primary-dark); }
+    .blog-body a i { transition: transform 0.3s; }
+    .blog-body a:hover i { transform: translateX(-3px); }
+
+    /* ===== News Section ===== */
+    .news-section {
+      background: var(--secondary);
+      padding: 0 0 80px;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .news-card {
+      background: #f5f5f5;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      transition: all 0.5s;
+      position: relative;
+    }
+    .news-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .news-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .news-card:hover img { transform: scale(1.05); }
+    .news-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.7));
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .news-card:hover .news-overlay { opacity: 1; }
+    .news-overlay-content {
+      color: #fff;
+      transform: translateY(20px);
+      transition: transform 0.4s;
+    }
+    .news-card:hover .news-overlay-content { transform: translateY(0); }
+    .news-overlay-content h4 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .news-overlay-content .date { font-size: 13px; opacity: 0.8; margin-bottom: 8px; }
+    .news-overlay-content p { font-size: 13px; line-height: 1.5; opacity: 0; transition: opacity 0.3s 0.1s; }
+    .news-card:hover .news-overlay-content p { opacity: 0.9; }
+
+    /* ===== CTA Section ===== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      padding: 80px 0;
+      text-align: center;
+      color: #fff;
+    }
+    .cta-section h2 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.4s;
+      border: none;
+    }
+    .cta-btn.primary {
+      background: #fff;
+      color: var(--primary);
+    }
+    .cta-btn.primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    .cta-btn.secondary {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+    }
+    .cta-btn.secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #fff;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: var(--primary-dark);
+      border-radius: 15px 15px 0 0;
+      padding: 60px 0 30px;
+      margin-top: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-logo-bg {
+      position: absolute;
+      width: 34%;
+      height: auto;
+      opacity: 0.05;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      position: relative;
+    }
+    .footer-col h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--primary-light);
+    }
+    .footer-contact-item {
+      margin-bottom: 16px;
+    }
+    .footer-contact-item strong {
+      display: block;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      padding-right: 15px;
+      position: relative;
+    }
+    .footer-contact-item strong::before {
+      content: '•';
+      color: var(--primary-light);
+      font-size: 18px;
+      position: absolute;
+      right: 0;
+    }
+    .footer-contact-item span {
+      display: block;
+      color: #e5e7eb;
+      font-size: 13px;
+      padding-right: 15px;
+      line-height: 1.6;
+    }
+    .footer-links {
+      list-style: none;
+    }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a {
+      color: #e5e7eb;
+      font-size: 14px;
+      display: block;
+      padding: 4px 0;
+      transition: all 0.3s;
+    }
+    .footer-links a:hover {
+      color: #fff;
+      padding-right: 5px;
+      transform: translateX(-5px);
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .footer-social a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+    .footer-social a:hover {
+      background: var(--primary-light);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(30,64,175,0.4);
+    }
+    .footer-divider {
+      border: none;
+      border-top: 0.5px solid rgba(255,255,255,0.15);
+      margin: 30px auto 40px;
+      max-width: 1129px;
+      width: 90%;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      color: #e5e7eb;
+      font-size: 12px;
+    }
+
+    /* ===== Mobile ===== */
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 200;
+    }
+    .mobile-menu-overlay.show { display: block; }
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background: #fff;
+      z-index: 201;
+      transition: right 0.3s;
+      overflow-y: auto;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    }
+    .mobile-menu.show { right: 0; }
+    .mobile-menu-header {
+      background: var(--secondary);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+    .mobile-menu-header h5 {
+      color: var(--primary);
+      font-size: 18px;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .mobile-nav {
+      list-style: none;
+      padding: 16px;
+    }
+    .mobile-nav li { margin-bottom: 8px; }
+    .mobile-nav a {
+      display: block;
+      padding: 12px 16px;
+      color: var(--primary);
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .mobile-nav a:hover { background: rgba(93,95,239,0.1); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 992px) {
+      .header-nav { display: none; }
+      .menu-toggle { display: block; }
+      .hero-slider { height: 500px; }
+      .hero-title { font-size: 38px; }
+      .product-grid { grid-template-columns: 1fr; }
+      .blog-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 60px 0; }
+      .hero-slider { height: 400px; }
+      .hero-slide { padding: 0 30px; }
+      .hero-title { font-size: 30px; }
+      .hero-sub { font-size: 15px; }
+      .hero-btn { font-size: 14px; padding: 12px 24px; }
+      .slider-btn { width: 40px; height: 40px; font-size: 16px; }
+      .section-title { font-size: 26px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .product-name { font-size: 28px; }
+      .product-specs { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid .gallery-item:first-child { height: 250px; }
+      .gallery-item { height: 250px; }
+      .map-info-box {
+        position: static;
+        transform: none;
+        max-width: 100%;
+        margin-top: 20px;
+      }
+      .blog-grid, .news-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .cta-section h2 { font-size: 28px; }
+    }
+    @media (max-width: 480px) {
+      .hero-slider { height: 350px; }
+      .hero-title { font-size: 24px; }
+      .hero-sub { font-size: 14px; }
+      .section { padding: 40px 0; }
+      .section-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Notification Bar -->
+  <div class="notification-bar">
+    <a href="https://bornakhodro.co" target="_blank">به وب‌سایت رسمی برنا خودرو پارس خوش آمدید ←</a>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <button class="menu-toggle" id="menuToggle" aria-label="منو">☰</button>
+      <a href="index-v2.html" class="header-logo">
+        <img src="logo-borna.svg" alt="برنا خودرو پارس" />
+      </a>
+      <nav class="header-nav">
+        <ul class="nav-list">
+          <li><a href="#" class="active">صفحه اصلی</a></li>
+          <li class="nav-item">
+            <a href="#">محصولات <i class="fas fa-chevron-down" style="font-size:10px; margin-right:4px;"></i></a>
+            <ul class="dropdown-menu-custom">
+              <li><a href="screens/products.html">BORNA 560 S</a></li>
+            </ul>
+          </li>
+          <li><a href="screens/sales.html">فروش</a></li>
+          <li><a href="screens/after-sales.html">خدمات پس از فروش</a></li>
+          <li><a href="screens/about.html">درباره ما</a></li>
+          <li><a href="screens/agents.html">شبکه نمایندگی</a></li>
+          <li><a href="screens/contact.html">تماس با ما</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <h5>برنا خودرو پارس</h5>
+      <button class="close-btn" id="closeBtn">✕</button>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="#" class="active">صفحه اصلی</a></li>
+      <li><a href="screens/products.html">محصولات — BORNA 560 S</a></li>
+      <li><a href="screens/sales.html">فروش</a></li>
+      <li><a href="screens/after-sales.html">خدمات پس از فروش</a></li>
+      <li><a href="screens/about.html">درباره ما</a></li>
+      <li><a href="screens/agents.html">شبکه نمایندگی</a></li>
+      <li><a href="screens/contact.html">تماس با ما</a></li>
+      <li><a href="admin.html">پنل مدیریت</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero Slider -->
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide active" data-index="0">
+      <div class="hero-slide-bg" style="background-image:url(slider-main.jpg);"></div>
+      <div class="hero-content">
+        <div class="hero-tag">حمل و نقل حرفه‌ای</div>
+        <h1 class="hero-title">قدرت یک کامیون<br/>ایرانی در جاده‌های جهان</h1>
+        <p class="hero-sub">BORNA 560 S با پیشرانه کامینز Z14 و گیربکس ZF Traxon، استانداردهای جهانی را به حمل‌ونقل ایران آورده است.</p>
+        <a href="screens/products.html" class="hero-btn">مشاهده محصول <i class="fas fa-arrow-left"></i></a>
+      </div>
+    </div>
+    <div class="hero-slide" data-index="1">
+      <div class="hero-slide-bg" style="background-image:url(poster-product.png); background-size:contain; background-position:center; background-color:#0d1a30;"></div>
+      <div class="hero-content">
+        <div class="hero-tag">مهندسی برتر</div>
+        <h1 class="hero-title">پیشرانه کامینز<br/>قدرت ۵۶۰ اسب بخار</h1>
+        <p class="hero-sub">فناوری ۱۳.۵ لیتری کامینز Z14E560 52 با دوام بالا و مصرف بهینه، برای طولانی‌ترین مسیرهای تجاری.</p>
+        <a href="screens/products.html" class="hero-btn">مشخصات فنی <i class="fas fa-arrow-left"></i></a>
+      </div>
+    </div>
+    <div class="hero-slide" data-index="2">
+      <div class="hero-slide-bg" style="background-image:url(hero-img2.jpg);"></div>
+      <div class="hero-content">
+        <div class="hero-tag">شبکه گسترده</div>
+        <h1 class="hero-title">خدمات پس از فروش<br/>در سراسر ایران</h1>
+        <p class="hero-sub">۲۰۰+ مرکز خدمات تخصصی، گارانتی موتور ۱,۰۰۰,۰۰۰ کیلومتر و تأمین قطعات اصلی در ۳۱ استان کشور.</p>
+        <a href="screens/after-sales.html" class="hero-btn">بیشتر بدانید <i class="fas fa-arrow-left"></i></a>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" id="sliderNext"><i class="fas fa-chevron-left"></i></button>
+      <button class="slider-btn" id="sliderPrev"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="slider-dots" id="sliderDots">
+      <div class="slider-dot active"></div>
+      <div class="slider-dot"></div>
+      <div class="slider-dot"></div>
+    </div>
+  </div>
+
+  <!-- Welcome Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">برنا خودرو پارس</h2>
+      <p class="section-subtitle">تولیدکننده خودروهای تجاری و صنعتی با بهره‌گیری از فناوری‌های روز دنیا و استانداردهای جهانی، همراه با شبکه گسترده خدمات پس از فروش در سراسر ایران</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-industry"></i></div>
+          <div>
+            <h3 class="feature-title">تولید با استاندارد جهانی</h3>
+            <p class="feature-desc">محصولات ما با همکاری برترین تأمین‌کنندگان جهانی نظیر کامینز، ZF، WABCO و SACHS تولید می‌شوند.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-tools"></i></div>
+          <div>
+            <h3 class="feature-title">گارانتی و خدمات گسترده</h3>
+            <p class="feature-desc">گارانتی موتور تا ۱,۰۰۰,۰۰۰ کیلومتر و شبکه ۲۰۰+ مرکز خدمات تخصصی در سراسر ایران.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <div>
+            <h3 class="feature-title">ایمنی و فناوری</h3>
+            <p class="feature-desc">مجهز به AEBS، LDWS، FCWS، ESC و چهار دوربین ۳۶۰ درجه با دید در شب — ایمنی در سطح استانداردهای اروپا.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <h3 class="feature-title">قدرت و دوام</h3>
+            <p class="feature-desc">پیشرانه ۵۶۰ اسب بخاری کامینز با گشتاور ۲,۶۵۰ نیوتن‌متر و فاصله سرویس ۱۰۰,۰۰۰ کیلومتر.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Showcase -->
+  <section class="product-showcase">
+    <div class="container">
+      <div class="product-grid">
+        <div class="product-image-wrapper">
+          <img src="poster-product.png" alt="BORNA 560 S" />
+        </div>
+        <div class="product-info">
+          <span class="product-badge">محصول شاخص</span>
+          <h2 class="product-name">BORNA 560 S</h2>
+          <p class="product-desc">کامیون کشنده BORNA 560 S با پیشرانه کامینز Z14E560 52 (۱۳.۵ لیتر، ۵۶۰ اسب بخار) و گیربکس هوشمند ZF Traxon 12TX2621TD (۱۲+۲ دنده AMT) — طراحیشده برای حمل‌ونقل برون‌شهری و ترانزیت با بالاترین استانداردهای ایمنی و رفاهی.</p>
+          <div class="product-specs">
+            <div class="product-spec"><i class="fas fa-tachometer-alt"></i> <span>قدرت: ۵۶۰ hp @ ۱,۸۰۰ rpm</span></div>
+            <div class="product-spec"><i class="fas fa-cog"></i> <span>گیربکس: ZF Traxon AMT ۱۲+۲</span></div>
+            <div class="product-spec"><i class="fas fa-weight-hanging"></i> <span>وزن ناخالص: ۴۶,۰۰۰ kg</span></div>
+            <div class="product-spec"><i class="fas fa-gas-pump"></i> <span>باک: ۶۵۰L + ۴۶۰L</span></div>
+          </div>
+          <a href="screens/products.html" class="hero-btn">مشاهده جزئیات کامل <i class="fas fa-arrow-left"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">گالری تصاویر</h2>
+      <p class="section-subtitle">تصاویری از محصولات، خط تولید و خدمات برنا خودرو پارس</p>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="slider-main.jpg" alt="BORNA 560 S نمای کامل" />
+          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
+        </div>
+        <div class="gallery-item">
+          <img src="hero-img2.jpg" alt="نمای جانبی" />
+          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
+        </div>
+        <div class="gallery-item">
+          <img src="hero-img1.png" alt="جزئیات فنی" />
+          <div class="gallery-zoom"><i class="fas fa-search-plus"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="map-section">
+    <div class="container" style="position:relative;">
+      <img src="images/iran-map.svg" alt="نقشه ایران" />
+      <div class="map-info-box">
+        <h3 class="map-info-title">شبکه گسترده خدمات</h3>
+        <p class="map-info-text">با بیش از ۲۰۰ مرکز خدمات تخصصی و نمایندگی‌های فعال در ۱۵ استان کشور، همواره در کنار شما هستیم.</p>
+        <a href="screens/agents.html" class="map-info-btn">مشاهده نمایندگی‌ها <i class="fas fa-arrow-left"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="blog-section">
+    <div class="container">
+      <h2 class="section-title">وبلاگ و مقالات</h2>
+      <p class="section-subtitle">آخرین مطالب و مقالات تخصصی در حوزه حمل‌ونقل و محصولات برنا خودرو پارس</p>
+      <div class="blog-grid">
+        <div class="blog-card">
+          <img src="hero-img1.png" alt="معرفی BORNA 560 S" style="background:linear-gradient(135deg,#133e87,#1a4fa0); object-fit:contain; padding:20px;" />
+          <div class="blog-body">
+            <h4>معرفی BORNA 560 S — نسل جدید حمل‌ونقل جاده‌ای</h4>
+            <a href="#">ادامه مطلب <i class="fas fa-arrow-left"></i></a>
+          </div>
+        </div>
+        <div class="blog-card">
+          <img src="hero-img2.jpg" alt="پیشرانه کامینز" />
+          <div class="blog-body">
+            <h4>نگاهی به پیشرانه کامینز Z14E560 — قدرت و دوام در کنار هم</h4>
+            <a href="#">ادامه مطلب <i class="fas fa-arrow-left"></i></a>
+          </div>
+        </div>
+        <div class="blog-card">
+          <img src="poster-product.png" alt="سرویس و نگهداری" style="object-fit:contain; background:#f5f5f5; padding:20px;" />
+          <div class="blog-body">
+            <h4>راهنمای سرویس و نگهداری BORNA 560 S — هر ۱۰۰,۰۰۰ کیلومتر</h4>
+            <a href="#">ادامه مطلب <i class="fas fa-arrow-left"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section class="news-section">
+    <div class="container">
+      <h2 class="section-title">اخبار و اطلاعیه‌ها</h2>
+      <p class="section-subtitle">آخرین رویدادها، اطلاعیه‌ها و اخبار شرکت برنا خودرو پارس</p>
+      <div class="news-grid">
+        <div class="news-card">
+          <img src="slider-main.jpg" alt="خبر" />
+          <div class="news-overlay">
+            <div class="news-overlay-content">
+              <span class="date">۱۵ اردیبهشت ۱۴۰۵</span>
+              <h4>آغاز فروش ویژه BORNA 560 S با شرایط اقساطی</h4>
+              <p>طرح فروش اقساطی ۲۴ ماهه با کمترین بهره برای خریداران حرفه‌ای حمل‌ونقل آغاز شد.</p>
+            </div>
+          </div>
+        </div>
+        <div class="news-card">
+          <img src="hero-img2.jpg" alt="خبر" />
+          <div class="news-overlay">
+            <div class="news-overlay-content">
+              <span class="date">۸ اردیبهشت ۱۴۰۵</span>
+              <h4>حضور برنا خودرو پارس در نمایشگاه بین‌المللی خودرو</h4>
+              <p>برنا خودرو پارس با جدیدترین محصول خود در نمایشگاه بین‌المللی تهران حضور یافت.</p>
+            </div>
+          </div>
+        </div>
+        <div class="news-card">
+          <img src="poster-product.png" alt="خبر" style="object-fit:contain; background:#f5f5f5; padding:20px;" />
+          <div class="news-overlay">
+            <div class="news-overlay-content">
+              <span class="date">۱ اردیبهشت ۱۴۰۵</span>
+              <h4>تمدید گارانتی موتور تا ۱,۰۰۰,۰۰۰ کیلومتر</h4>
+              <p>گارانتی موتور کامینز Z14 برای همه خریداران جدید به یک میلیون کیلومتر افزایش یافت.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>آماده همکاری با شما هستیم</h2>
+      <p>برای دریافت مشاوره خرید، اطلاعات فنی یا همکاری تجاری، با تیم فروش ما تماس بگیرید.</p>
+      <div class="cta-buttons">
+        <a href="screens/contact.html" class="cta-btn primary">تماس با ما <i class="fas fa-phone"></i></a>
+        <a href="screens/products.html" class="cta-btn secondary">درخواست مشاوره <i class="fas fa-comment"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <img src="logo-borna.svg" alt="" class="footer-logo-bg" />
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>درباره برنا خودرو</h4>
+          <p style="color:#e5e7eb; font-size:13px; line-height:1.7; margin-bottom:16px;">
+            برنا خودرو پارس با بهره‌گیری از دانش فنی روز و همکاری با برترین تأمین‌کنندگان جهانی، محصولات تجاری با کیفیت و استانداردهای بین‌المللی را به بازار ایران عرضه می‌کند.
+          </p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-telegram-plane"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>دسترسی سریع</h4>
+          <ul class="footer-links">
+            <li><a href="#">صفحه اصلی</a></li>
+            <li><a href="screens/products.html">BORNA 560 S</a></li>
+            <li><a href="screens/sales.html">طرح‌های فروش</a></li>
+            <li><a href="screens/after-sales.html">خدمات پس از فروش</a></li>
+            <li><a href="screens/agents.html">شبکه نمایندگی</a></li>
+            <li><a href="screens/about.html">درباره ما</a></li>
+            <li><a href="screens/contact.html">تماس با ما</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>اطلاعات تماس</h4>
+          <div class="footer-contact-item">
+            <strong>آدرس دفتر مرکزی</strong>
+            <span>تهران، کیلومتر ۱۵ جاده مخصوص کرج، بعد از پل ایران خودرو، جنب فرش وزرا، پلاک ۴۶۷، طبقه اول، واحد ۶</span>
+          </div>
+          <div class="footer-contact-item">
+            <strong>کارخانه شیراز</strong>
+            <span>شیراز، منطقه ویژه اقتصادی شیراز، بلوار تجارت شرقی — ۰۷۱-۳۶۵۴۳۲۱۰</span>
+          </div>
+          <div class="footer-contact-item">
+            <strong>تلفن</strong>
+            <span dir="ltr">۰۲۱-۴۴۱۸۱۱۳۴</span>
+          </div>
+          <div class="footer-contact-item">
+            <strong>فکس</strong>
+            <span dir="ltr">۰۲۱-۴۴۱۸۱۱۴۳</span>
+          </div>
+          <div class="footer-contact-item">
+            <strong>ایمیل</strong>
+            <span dir="ltr">info@bornakhodro.co</span>
+          </div>
+          <div class="footer-contact-item">
+            <strong>ساعات کاری</strong>
+            <span>شنبه تا چهارشنبه ۸:۰۰ — ۱۷:۰۰ / پنجشنبه ۸:۰۰ — ۱۴:۰۰</span>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-bottom">
+        <p>© ۱۴۰۵ — تمامی حقوق مادی و معنوی این وب‌سایت متعلق به برنا خودرو پارس می‌باشد.</p>
+        <p>طراحی و توسعه با افتخار در ایران</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile Menu
+      var menuToggle = document.getElementById('menuToggle');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var mobileOverlay = document.getElementById('mobileOverlay');
+      var closeBtn = document.getElementById('closeBtn');
+
+      function openMenu() {
+        mobileMenu.classList.add('show');
+        mobileOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMenu() {
+        mobileMenu.classList.remove('show');
+        mobileOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+
+      if (menuToggle) menuToggle.addEventListener('click', openMenu);
+      if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+      if (mobileOverlay) mobileOverlay.addEventListener('click', closeMenu);
+      document.querySelectorAll('.mobile-nav a').forEach(function(a) {
+        a.addEventListener('click', closeMenu);
+      });
+
+      // Hero Slider
+      var slides = document.querySelectorAll('.hero-slide');
+      var dots = document.querySelectorAll('.slider-dot');
+      var prevBtn = document.getElementById('sliderPrev');
+      var nextBtn = document.getElementById('sliderNext');
+      var current = 0;
+      var autoTimer = null;
+
+      function goTo(index) {
+        slides.forEach(function(s, i) {
+          s.classList.toggle('active', i === index);
+        });
+        dots.forEach(function(d, i) {
+          d.classList.toggle('active', i === index);
+        });
+        current = index;
+        resetTimer();
+      }
+
+      function nextSlide() {
+        goTo((current + 1) % slides.length);
+      }
+
+      function prevSlide() {
+        goTo((current - 1 + slides.length) % slides.length);
+      }
+
+      function resetTimer() {
+        if (autoTimer) clearInterval(autoTimer);
+        autoTimer = setInterval(nextSlide, 7000);
+      }
+
+      if (nextBtn) nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextSlide(); });
+      if (prevBtn) prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevSlide(); });
+      dots.forEach(function(dot, i) {
+        dot.addEventListener('click', function() { goTo(i); });
+      });
+
+      resetTimer();
+    });
+  </script>
+
+</body>
+</html>

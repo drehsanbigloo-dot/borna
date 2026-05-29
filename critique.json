@@ -1,0 +1,26 @@
+{
+  "kind": "critique-panel",
+  "score": 4,
+  "axes": {
+    "philosophy": {
+      "score": 4,
+      "notes": "Automotive corporate brand identity — deep navy conveys power and stability. Clean, professional layout matches a large manufacturer. Could push 'powerful' visual weight further with bolder typography on hero."
+    },
+    "hierarchy": {
+      "score": 4,
+      "notes": "Hero slider is strong first anchor. Sections flow logically from welcome → products → services → stats → news → CTA. Product filtering provides clear secondary navigation. CTAs could be more prominent on subpages."
+    },
+    "execution": {
+      "score": 4,
+      "notes": "Consistent typography (Peyda), spacing, and alignment throughout all 7 pages. RTL layout correct. Shared CSS system works. Form validation functional. Hero slider, mobile menu, scroll reveal all working. Minor: no actual map on contact page (placeholder)."
+    },
+    "specificity": {
+      "score": 4,
+      "notes": "All copy is specific to Borna Khodro — real Persian-language product names, service descriptions, history. No generic filler or lorem ipsum. Stats are illustrative prototypes (150k units, 200+ agencies). Product filter categories relevant to vehicle types."
+    },
+    "restraint": {
+      "score": 4,
+      "notes": "Single accent (navy #133e87) used consistently. One decisive visual element per section. No competing gradients or flourishes. Clean card-based layouts. Could simplify the hero pattern overlay further."
+    }
+  }
+}
